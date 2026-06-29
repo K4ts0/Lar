@@ -1,4 +1,4 @@
-# 🏥 LAR RESIDENCIAL ACONCHEGO
+# 🏥 Sistema para geriátricos
 ## Sistema de Relatórios de Enfermagem para Geriatria
 
 <p align="center">
