@@ -32,7 +32,7 @@
 
 ## 🏠 Sobre o Projeto
 
-O **LAR RESIDENCIAL ACONCHEGO** é um sistema web desenvolvido especificamente para **lares geriátricos e residenciais de idosos**, focado no gerenciamento de relatórios de enfermagem por turno (noturno e diurno).
+O é um sistema web desenvolvido especificamente para **lares geriátricos e residenciais de idosos**, focado no gerenciamento de relatórios de enfermagem por turno (noturno e diurno).
 
 O sistema permite que equipes de enfermagem registrem de forma organizada e segura todas as atividades, procedimentos, observações e cuidados realizados durante cada plantão, garantindo a continuidade do atendimento e a rastreabilidade das informações dos residentes.
 
