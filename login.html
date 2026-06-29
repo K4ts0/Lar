@@ -1,0 +1,474 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAR RESIDENCIAL ACONCHEGO • Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* Verde Bebê - tons suaves */
+      --verde-bebe: #A8D5BA;
+      --verde-bebe-light: #E8F5E9;
+      --verde-bebe-soft: #C8E6C9;
+      --verde-bebe-dark: #558B6E;
+      --verde-bebe-text: #3D6B54;
+      
+      /* Rosa Bebê - tons suaves */
+      --rosa-bebe: #F4C2C2;
+      --rosa-bebe-light: #FCE4EC;
+      --rosa-bebe-soft: #F8E1E4;
+      --rosa-bebe-dark: #C98B8B;
+      --rosa-bebe-text: #A66B6B;
+      
+      /* Cores neutras suaves */
+      --fundo: #FAFCFB;
+      --branco: #FFFFFF;
+      --texto: #5A5A5A;
+      --texto-claro: #7A7A7A;
+      --borda: #E8EDE9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(180deg, var(--fundo) 0%, var(--verde-bebe-light) 50%, var(--rosa-bebe-light) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: var(--branco);
+      border-radius: 30px;
+      padding: 50px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 20px 50px rgba(168, 213, 186, 0.2);
+      border: 2px solid var(--verde-bebe-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(168, 213, 186, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 50px;
+      color: var(--branco);
+      box-shadow: 0 10px 30px rgba(168, 213, 186, 0.3);
+    }
+
+    .logo-section h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
+      color: var(--verde-bebe-text);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .logo-section p {
+      color: var(--rosa-bebe-text);
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--verde-bebe-text);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--rosa-bebe-text);
+      font-size: 1.1rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: 2px solid var(--verde-bebe-soft);
+      border-radius: 15px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: var(--branco);
+      color: var(--texto);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--rosa-bebe);
+      box-shadow: 0 0 0 4px rgba(244, 194, 194, 0.2);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      border: none;
+      border-radius: 15px;
+      color: var(--branco);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(168, 213, 186, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(168, 213, 186, 0.4);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--rosa-bebe-light) 100%);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 30px;
+      border: 2px solid var(--branco);
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-box h3 {
+      font-size: 0.9rem;
+      color: var(--verde-bebe-text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box p {
+      font-size: 0.85rem;
+      color: var(--texto);
+      margin: 5px 0;
+    }
+
+    .error-message {
+      background: var(--rosa-bebe-light);
+      color: var(--rosa-bebe-text);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      border: 2px solid var(--rosa-bebe);
+    }
+
+    .error-message.active {
+      display: flex;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: var(--branco);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+
+<base target="_blank">
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo-section">
+      <div class="logo-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <h1>LAR RESIDENCIAL ACONCHEGO</h1>
+      <p>Sistema de Relatórios de Enfermagem</p>
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="errorText">Usuário ou senha incorretos!</span>
+    </div>
+
+    <form id="loginForm" onsubmit="fazerLogin(event)">
+      <div class="form-group">
+        <label>Usuário</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Digite seu usuário" required autocomplete="off">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Senha</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Digite sua senha" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="btnLogin">
+        <i class="fas fa-sign-in-alt"></i> 
+        <span>Entrar no Sistema</span>
+      </button>
+    </form>
+
+    <div class="info-box">
+      <h3><i class="fas fa-info-circle"></i> Usuários de Teste</h3>
+      <p><strong>Admin:</strong> admin / admin123</p>
+      <p><strong>Enfermeiro:</strong> enfermeiro / enf123</p>
+      <p><strong>Técnico:</strong> tecnico / tec123</p>
+      <p><strong>Estagiário:</strong> estagiario / est123</p>
+    </div>
+  </div>
+
+  <script>
+    // API Base URL
+    const API_URL = 'http://localhost:3000/api';
+
+    // Função para verificar se está logado
+    function verificarSessaoExistente() {
+      try {
+        const token = sessionStorage.getItem('token');
+        const usuario = sessionStorage.getItem('usuario');
+        
+        console.log('🔍 Verificando sessão existente:', token ? 'Token presente' : 'Sem token');
+        
+        if (token && usuario) {
+          // Tentar parse do usuário para validar
+          try {
+            JSON.parse(usuario);
+            console.log('✅ Sessão válida encontrada');
+            return true;
+          } catch (e) {
+            console.log('❌ Sessão corrompida, limpando...');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('usuario');
+            return false;
+          }
+        }
+        return false;
+      } catch (error) {
+        console.error('Erro ao verificar sessão:', error);
+        return false;
+      }
+    }
+
+    // Se já estiver logado, redirecionar imediatamente
+    if (verificarSessaoExistente()) {
+      console.log('🔄 Redirecionando para home (já logado)');
+      window.location.href = 'home.html';
+    }
+
+    // Função principal de login
+    async function fazerLogin(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const btnLogin = document.getElementById('btnLogin');
+      const errorDiv = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+
+      // Validar campos
+      if (!username || !password) {
+        errorText.textContent = 'Preencha usuário e senha!';
+        errorDiv.classList.add('active');
+        setTimeout(() => errorDiv.classList.remove('active'), 3000);
+        return;
+      }
+
+      // Desabilitar botão durante a requisição
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = '<span class="loading-spinner"></span> Entrando...';
+
+      try {
+        console.log('📤 Tentando login com:', { usuario: username });
+
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            usuario: username,
+            senha: password
+          })
+        });
+
+        console.log('📥 Status da resposta:', response.status);
+
+        const data = await response.json();
+        console.log('📦 Dados da resposta:', data);
+
+        if (response.ok && data.sucesso) {
+          // SALVAR DADOS NO SESSIONSTORAGE
+          try {
+            // Limpar sessão antiga
+            sessionStorage.clear();
+            
+            // Salvar novos dados
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+            
+            // VERIFICAÇÃO IMEDIATA
+            const tokenSalvo = sessionStorage.getItem('token');
+            const usuarioSalvo = sessionStorage.getItem('usuario');
+            
+            console.log('✅ Dados salvos no sessionStorage:');
+            console.log('   - Token:', tokenSalvo ? 'Presente (' + tokenSalvo.substring(0, 20) + '...)' : 'AUSENTE!');
+            console.log('   - Usuário:', usuarioSalvo ? 'Presente' : 'AUSENTE!');
+            
+            if (usuarioSalvo) {
+              try {
+                const userData = JSON.parse(usuarioSalvo);
+                console.log('   - Nome:', userData.nome);
+                console.log('   - Nível:', userData.nivel);
+              } catch (e) {
+                console.error('   - ERRO ao parsear usuário:', e);
+              }
+            }
+            
+            // Verificar se os dados foram realmente salvos
+            if (!tokenSalvo || !usuarioSalvo) {
+              throw new Error('Falha ao salvar dados no sessionStorage');
+            }
+            
+            // Mostrar mensagem de sucesso
+            errorText.textContent = 'Login realizado com sucesso! Redirecionando...';
+            errorDiv.style.background = 'var(--verde-bebe-light)';
+            errorDiv.style.color = 'var(--verde-bebe-text)';
+            errorDiv.style.borderColor = 'var(--verde-bebe)';
+            errorDiv.classList.add('active');
+            
+            // Redirecionar após 1 segundo
+            setTimeout(() => {
+              console.log('🔄 Redirecionando para home...');
+              window.location.href = 'home.html';
+            }, 1000);
+            
+          } catch (storageError) {
+            console.error('❌ Erro ao salvar no sessionStorage:', storageError);
+            errorText.textContent = 'Erro ao salvar dados de login. Tente novamente.';
+            errorDiv.classList.add('active');
+            
+            // Reabilitar botão
+            btnLogin.disabled = false;
+            btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar no Sistema';
+          }
+          
+        } else {
+          // Mostrar erro
+          errorText.textContent = data.erro || 'Usuário ou senha incorretos!';
+          errorDiv.classList.add('active');
+          setTimeout(() => errorDiv.classList.remove('active'), 3000);
+          
+          // Reabilitar botão
+          btnLogin.disabled = false;
+          btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar no Sistema';
+        }
+      } catch (error) {
+        console.error('❌ Erro detalhado:', error);
+        
+        // Verificar se é erro de conexão
+        if (!navigator.onLine) {
+          errorText.textContent = 'Sem conexão com a internet!';
+        } else {
+          errorText.textContent = 'Erro de conexão com o servidor. Verifique se a API está rodando em http://localhost:3000';
+        }
+        
+        errorDiv.classList.add('active');
+        
+        // Reabilitar botão
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar no Sistema';
+      }
+    }
+
+    // Adicionar listener para tecla Enter
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        fazerLogin(e);
+      }
+    });
+
+    // Debug: Mostrar estado do sessionStorage ao carregar a página
+    console.log('📊 Estado inicial do sessionStorage:');
+    console.log('   - Token:', sessionStorage.getItem('token') ? 'Presente' : 'Ausente');
+    console.log('   - Usuário:', sessionStorage.getItem('usuario') ? 'Presente' : 'Ausente');
+  </script>
+</body>
+</html>

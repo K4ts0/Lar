@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste de Sessão</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: linear-gradient(145deg, #E8F5E9 0%, #FCE4EC 100%);
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2E7D32; }
+        .info-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .success { color: #2E7D32; }
+        .error { color: #C2185B; }
+        button {
+            background: linear-gradient(135deg, #90EE90 0%, #FFB6C1 100%);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+            border: 2px solid white;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        pre {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico de Sessão</h1>
+        
+        <div class="info-box" id="info">
+            <p>Carregando informações da sessão...</p>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <h3>Ações:</h3>
+            <button onclick="fazerLoginAdmin()">🔐 Simular Login (Admin)</button>
+            <button onclick="fazerLoginEnfermeiro()">👩‍⚕️ Simular Login (Enfermeiro)</button>
+            <button onclick="limparSessao()">🗑️ Limpar Sessão</button>
+            <button onclick="verificarAPI()">🌐 Verificar API</button>
+            <button onclick="irParaRelatorio()">📝 Ir para Relatório</button>
+            <button onclick="irParaHome()">🏠 Ir para Home</button>
+        </div>
+
+        <div style="margin-top: 30px;" id="apiStatus"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        function atualizarInfo() {
+            const token = sessionStorage.getItem('token');
+            const usuarioStr = sessionStorage.getItem('usuario');
+            
+            let usuario = null;
+            let erroParse = null;
+            
+            if (usuarioStr) {
+                try {
+                    usuario = JSON.parse(usuarioStr);
+                } catch (e) {
+                    erroParse = e.message;
+                }
+            }
+            
+            const infoDiv = document.getElementById('info');
+            
+            let html = `
+                <h3>📊 Dados da Sessão (sessionStorage):</h3>
+                <p><strong>Token:</strong> ${token ? '✅ Presente' : '❌ Ausente'}</p>
+            `;
+            
+            if (token) {
+                html += `<p><strong>Token (primeiros 20 chars):</strong> ${token.substring(0, 20)}...</p>`;
+            }
+            
+            html += `<p><strong>Usuario String:</strong> ${usuarioStr ? '✅ Presente' : '❌ Ausente'}</p>`;
+            
+            if (erroParse) {
+                html += `<p class="error"><strong>Erro ao parsear usuário:</strong> ${erroParse}</p>`;
+            }
+            
+            if (usuario) {
+                html += `
+                    <h4>Dados do Usuário:</h4>
+                    <ul>
+                        <li><strong>ID:</strong> ${usuario.id || 'N/A'}</li>
+                        <li><strong>Nome:</strong> ${usuario.nome || 'N/A'}</li>
+                        <li><strong>Usuário:</strong> ${usuario.usuario || 'N/A'}</li>
+                        <li><strong>Nível:</strong> ${usuario.nivel || 'N/A'}</li>
+                    </ul>
+                `;
+            }
+            
+            html += `<h4>Conteúdo completo do sessionStorage:</h4>`;
+            html += `<pre>`;
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                const value = sessionStorage.getItem(key);
+                html += `${key}: ${value}\n`;
+            }
+            html += `</pre>`;
+            
+            infoDiv.innerHTML = html;
+        }
+
+        async function fazerLoginAdmin() {
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario: 'admin', senha: 'admin123' })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.sucesso) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    alert('✅ Login simulado com sucesso!');
+                    atualizarInfo();
+                } else {
+                    alert('❌ Erro no login: ' + (data.erro || 'Desconhecido'));
+                }
+            } catch (error) {
+                alert('❌ Erro ao conectar com API: ' + error.message);
+            }
+        }
+
+        async function fazerLoginEnfermeiro() {
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario: 'enfermeiro', senha: 'enf123' })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.sucesso) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    alert('✅ Login simulado com sucesso!');
+                    atualizarInfo();
+                } else {
+                    alert('❌ Erro no login: ' + (data.erro || 'Desconhecido'));
+                }
+            } catch (error) {
+                alert('❌ Erro ao conectar com API: ' + error.message);
+            }
+        }
+
+        function limparSessao() {
+            sessionStorage.clear();
+            alert('🗑️ Sessão limpa!');
+            atualizarInfo();
+        }
+
+        async function verificarAPI() {
+            const statusDiv = document.getElementById('apiStatus');
+            statusDiv.innerHTML = '<p>Verificando API...</p>';
+            
+            try {
+                const response = await fetch(`${API_URL}/status`);
+                const data = await response.json();
+                
+                statusDiv.innerHTML = `
+                    <h3>🌐 Status da API:</h3>
+                    <p class="success">✅ API Online!</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <h3>🌐 Status da API:</h3>
+                    <p class="error">❌ API Offline!</p>
+                    <p>Erro: ${error.message}</p>
+                    <p>Certifique-se de que o servidor está rodando em ${API_URL}</p>
+                `;
+            }
+        }
+
+        function irParaRelatorio() {
+            window.location.href = 'relatorio.html';
+        }
+
+        function irParaHome() {
+            window.location.href = 'home.html';
+        }
+
+        // Atualizar informações ao carregar a página
+        window.onload = function() {
+            atualizarInfo();
+            verificarAPI();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,2702 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAR RESIDENCIAL ACONCHEGO • Relatório Enfermagem</title>
+  
+  <!-- SCRIPT DE VERIFICAÇÃO BLOQUEANTE NO TOPO -->
+  <script>
+    (function() {
+      console.log('🔍 VERIFICAÇÃO BLOQUEANTE INICIADA');
+      
+      // Tentar recuperar dados da sessão
+      let token = null;
+      let usuario = null;
+      
+      try {
+        token = sessionStorage.getItem('token');
+        const usuarioStr = sessionStorage.getItem('usuario');
+        
+        console.log('📦 Token:', token ? 'Presente' : 'Ausente');
+        console.log('📦 Usuário string:', usuarioStr ? 'Presente' : 'Ausente');
+        
+        if (usuarioStr) {
+          try {
+            usuario = JSON.parse(usuarioStr);
+            console.log('✅ Usuário parseado:', usuario.nome, '-', usuario.nivel);
+          } catch (e) {
+            console.error('❌ Erro ao parsear usuário:', e);
+          }
+        }
+        
+        // Verificar se está logado
+        if (!token || !usuario) {
+          console.log('❌ SESSÃO NÃO ENCONTRADA - Redirecionando para login');
+          alert('Sessão não encontrada. Por favor, faça login novamente.');
+          window.location.replace('login.html');
+          return;
+        }
+        
+        // Salvar dados em variáveis globais para o resto da página
+        window.__token = token;
+        window.__usuario = usuario;
+        
+        console.log('✅ SESSÃO VÁLIDA - Acesso permitido para', usuario.nome);
+        
+      } catch (error) {
+        console.error('❌ Erro grave na verificação:', error);
+        alert('Erro ao verificar sessão. Redirecionando para login.');
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      /* Verde Bebê - tons suaves */
+      --verde-bebe: #A8D5BA;
+      --verde-bebe-light: #E8F5E9;
+      --verde-bebe-soft: #C8E6C9;
+      --verde-bebe-dark: #558B6E;
+      --verde-bebe-text: #3D6B54;
+      
+      /* Rosa Bebê - tons suaves */
+      --rosa-bebe: #F4C2C2;
+      --rosa-bebe-light: #FCE4EC;
+      --rosa-bebe-soft: #F8E1E4;
+      --rosa-bebe-dark: #C98B8B;
+      --rosa-bebe-text: #A66B6B;
+      
+      /* Cores neutras suaves */
+      --fundo: #FAFCFB;
+      --branco: #FFFFFF;
+      --texto: #5A5A5A;
+      --texto-claro: #7A7A7A;
+      --borda: #E8EDE9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(180deg, var(--fundo) 0%, var(--verde-bebe-light) 50%, var(--rosa-bebe-light) 100%);
+      font-family: 'Inter', sans-serif;
+      padding: 30px 20px;
+      min-height: 100vh;
+      color: var(--texto);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, var(--verde-bebe-soft) 0%, var(--rosa-bebe-soft) 100%);
+      color: var(--texto);
+      padding: 35px 30px;
+      border-radius: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(168, 213, 186, 0.2);
+      border: 2px solid var(--branco);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-icon {
+      font-size: 58px;
+      background: var(--branco);
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(168, 213, 186, 0.2);
+      color: var(--verde-bebe-text);
+    }
+
+    .header-text h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 5px;
+      font-family: 'Poppins', sans-serif;
+      color: var(--verde-bebe-text);
+    }
+
+    .header-text p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--rosa-bebe-text);
+    }
+
+    /* User info bar */
+    .user-bar {
+      background: var(--branco);
+      border-radius: 15px;
+      padding: 15px 25px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      box-shadow: 0 5px 15px rgba(168, 213, 186, 0.1);
+      border: 2px solid var(--verde-bebe-soft);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--branco);
+      font-size: 1.2rem;
+    }
+
+    .user-details h4 {
+      color: var(--verde-bebe-text);
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .user-details span {
+      color: var(--texto-claro);
+      font-size: 0.85rem;
+    }
+
+    .btn-voltar {
+      background: linear-gradient(135deg, var(--rosa-bebe) 0%, var(--rosa-bebe-dark) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(244, 194, 194, 0.3);
+    }
+
+    .btn-voltar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(244, 194, 194, 0.4);
+    }
+
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--branco);
+      border: none;
+      padding: 16px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--texto);
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(168, 213, 186, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      border: 2px solid var(--verde-bebe-soft);
+    }
+
+    .tab-btn i {
+      color: var(--verde-bebe-text);
+      font-size: 1.4rem;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      color: var(--branco);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(168, 213, 186, 0.3);
+      border-color: var(--branco);
+    }
+
+    .tab-btn.active i {
+      color: var(--branco);
+    }
+
+    /* ===== CONTEÚDO DAS TABS ===== */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CARTÃO DE SEÇÃO ===== */
+    .section-card {
+      background: var(--branco);
+      border-radius: 24px;
+      padding: 28px 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 25px rgba(168, 213, 186, 0.12);
+      border: 2px solid var(--verde-bebe-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 12px 35px rgba(168, 213, 186, 0.18);
+      border-color: var(--rosa-bebe-soft);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      border-bottom: 2px solid var(--verde-bebe-soft);
+      padding-bottom: 16px;
+    }
+
+    .section-title i {
+      font-size: 28px;
+      color: var(--verde-bebe-text);
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--rosa-bebe-light) 100%);
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(168, 213, 186, 0.15);
+    }
+
+    .section-title h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--verde-bebe-text);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      color: var(--branco);
+      font-size: 0.9rem;
+      padding: 5px 12px;
+      border-radius: 40px;
+      margin-left: 15px;
+      font-weight: 700;
+    }
+
+    /* ===== GRIDS ===== */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    /* ===== INPUTS ===== */
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--verde-bebe-text);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-group input, 
+    .input-group textarea,
+    .input-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--verde-bebe-soft);
+      border-radius: 16px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: var(--branco);
+      transition: all 0.3s ease;
+      color: var(--texto);
+    }
+
+    .input-group input:focus, 
+    .input-group textarea:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: var(--rosa-bebe);
+      box-shadow: 0 0 0 4px rgba(244, 194, 194, 0.2);
+    }
+
+    .input-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* ===== OBSERVAÇÕES ===== */
+    .obs-item {
+      background: var(--rosa-bebe-light);
+      border-left: 5px solid var(--rosa-bebe);
+      padding: 18px 20px;
+      border-radius: 16px;
+      margin-bottom: 15px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .obs-item.danger {
+      border-left-color: #dc3545;
+      background: #fff5f5;
+    }
+
+    .obs-icon {
+      background: var(--branco);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rosa-bebe-text);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      border: 2px solid var(--rosa-bebe);
+    }
+
+    .obs-content {
+      flex: 1;
+    }
+
+    .obs-content input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--verde-bebe-soft);
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+
+    .btn-remove-obs {
+      background: var(--rosa-bebe);
+      color: var(--branco);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-remove-obs:hover {
+      background: var(--rosa-bebe-dark);
+      transform: scale(1.1);
+    }
+
+    /* ===== BOTÕES ADD ===== */
+    .btn-add {
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      box-shadow: 0 5px 15px rgba(168, 213, 186, 0.3);
+    }
+
+    .btn-add:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(168, 213, 186, 0.4);
+    }
+
+    /* ===== TABELAS ===== */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    .data-table th {
+      text-align: left;
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--rosa-bebe-light) 100%);
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--verde-bebe-text);
+      border-radius: 12px 12px 0 0;
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--verde-bebe-soft);
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table td input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--verde-bebe-soft);
+      border-radius: 10px;
+    }
+
+    /* ===== LISTA HORIZONTAL ===== */
+    .horizontal-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 25px;
+      background: var(--verde-bebe-light);
+      padding: 20px;
+      border-radius: 20px;
+      margin: 10px 0;
+    }
+
+    .horizontal-list-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--branco);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 2px solid var(--verde-bebe);
+    }
+
+    .horizontal-list-item i {
+      color: var(--verde-bebe-text);
+    }
+
+    .btn-remove-small {
+      background: none;
+      border: none;
+      color: var(--rosa-bebe-text);
+      cursor: pointer;
+      margin-left: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* ===== CHECKBOX GRID ===== */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--verde-bebe-light);
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-item:hover {
+      border-color: var(--rosa-bebe);
+      background: var(--rosa-bebe-light);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--verde-bebe-text);
+      cursor: pointer;
+    }
+
+    .checkbox-item.checked {
+      background: var(--rosa-bebe-light);
+      border-color: var(--rosa-bebe);
+    }
+
+    /* ===== BOTÕES ===== */
+    .action-buttons {
+      display: flex;
+      gap: 18px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 25px rgba(168, 213, 186, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(168, 213, 186, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--branco);
+      color: var(--verde-bebe-text);
+      border: 3px solid var(--verde-bebe);
+      padding: 14px 30px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--verde-bebe-light);
+    }
+
+    .btn-pdf {
+      background: linear-gradient(135deg, var(--rosa-bebe) 0%, var(--rosa-bebe-dark) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 25px rgba(244, 194, 194, 0.4);
+    }
+
+    .btn-pdf:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(244, 194, 194, 0.5);
+    }
+
+    .btn-temp {
+      background: linear-gradient(135deg, #A8C9E8 0%, #74b9ff 100%);
+      color: var(--branco);
+      border: none;
+      padding: 14px 30px;
+      border-radius: 60px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+    }
+
+    .btn-temp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(116, 185, 255, 0.4);
+    }
+
+    /* ===== TIMELINE INGESTA HÍDRICA ===== */
+    .timeline {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .timeline-item {
+      flex: 1;
+      min-width: 100px;
+      background: var(--verde-bebe-light);
+      border-radius: 16px;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid var(--verde-bebe);
+      transition: all 0.3s ease;
+    }
+
+    .timeline-item:focus-within {
+      border-color: var(--rosa-bebe);
+      background: var(--rosa-bebe-light);
+    }
+
+    .timeline-item label {
+      display: block;
+      font-weight: 700;
+      color: var(--verde-bebe-text);
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .timeline-item input {
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      font-size: 1.1rem;
+      padding: 5px;
+      color: var(--texto);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--verde-bebe-text);
+      font-weight: 600;
+    }
+
+    /* ===== MENSAGEM SUCESSO ===== */
+    .success-message {
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--rosa-bebe-light) 100%);
+      color: var(--verde-bebe-text);
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      border: 2px solid var(--branco);
+      box-shadow: 0 5px 20px rgba(168, 213, 186, 0.15);
+    }
+
+    .success-message.active {
+      display: flex;
+      animation: slideDown 0.5s;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== CAMPO DINÂMICO ===== */
+    .dynamic-field {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .dynamic-field input {
+      flex: 1;
+    }
+
+    .btn-remove-field {
+      background: var(--rosa-bebe);
+      color: var(--branco);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-remove-field:hover {
+      background: var(--rosa-bebe-dark);
+      transform: scale(1.1);
+    }
+
+    /* ===== HGT CARD ===== */
+    .hgt-card {
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--branco) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 2px solid var(--verde-bebe);
+      position: relative;
+    }
+
+    .hgt-card .obs-hgt {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px dashed var(--verde-bebe);
+    }
+
+    .hgt-card .obs-hgt label {
+      color: var(--rosa-bebe-text);
+      font-size: 0.85rem;
+    }
+
+    /* ===== TRICOTOMIA CARD ===== */
+    .tricotomia-card {
+      background: linear-gradient(135deg, var(--rosa-bebe-light) 0%, var(--branco) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 2px solid var(--rosa-bebe);
+    }
+
+    /* ===== CURATIVO CARD ===== */
+    .curativo-card {
+      background: linear-gradient(135deg, #FFF8E7 0%, var(--branco) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 2px solid #FFE4B5;
+    }
+
+    /* ===== REMOÇÃO CARD ===== */
+    .remocao-card {
+      background: linear-gradient(135deg, #E3F2FD 0%, var(--branco) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 2px solid #90CAF9;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+      
+      .timeline {
+        flex-direction: column;
+      }
+      
+      .tabs {
+        flex-direction: column;
+      }
+      
+      .header-text h1 {
+        font-size: 2rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn-primary, .btn-secondary, .btn-pdf, .btn-temp {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .user-bar {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .tabs, .btn-add, .btn-remove-obs, .btn-remove-field, .btn-remove-small, 
+      .action-buttons, .btn-temp, .user-bar {
+        display: none !important;
+      }
+      
+      .tab-content {
+        display: block !important;
+      }
+      
+      body {
+        background: var(--branco);
+        padding: 0;
+      }
+      
+      .section-card {
+        box-shadow: none;
+        border: 1px solid var(--borda);
+        break-inside: avoid;
+      }
+    }
+
+    /* ===== STATUS INDICATORS ===== */
+    .status-saved {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--verde-bebe);
+      color: var(--branco);
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-weight: 700;
+      box-shadow: 0 5px 20px rgba(168, 213, 186, 0.3);
+      display: none;
+      z-index: 1000;
+      border: 2px solid var(--branco);
+    }
+
+    .status-saved.active {
+      display: block;
+      animation: slideUp 0.5s;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-content">
+        <div class="header-icon">
+          <i class="fas fa-home"></i>
+        </div>
+        <div class="header-text">
+          <h1>LAR RESIDENCIAL ACONCHEGO</h1>
+          <p><i class="fas fa-heartbeat"></i> Sistema de Relatórios de Enfermagem</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER BAR -->
+    <div class="user-bar">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user-nurse"></i>
+        </div>
+        <div class="user-details">
+          <h4 id="userName">Carregando...</h4>
+          <span id="userLevel">...</span>
+        </div>
+      </div>
+      <button class="btn-voltar" onclick="window.location.href='home.html'">
+        <i class="fas fa-arrow-left"></i> Voltar ao Painel
+      </button>
+    </div>
+
+    <!-- MENSAGEM DE SUCESSO -->
+    <div class="success-message" id="successMessage">
+      <i class="fas fa-check-circle fa-lg"></i>
+      <span id="successText">Relatório salvo com sucesso!</span>
+    </div>
+
+    <!-- STATUS DO SALVAMENTO -->
+    <div class="status-saved" id="statusSaved">
+      <i class="fas fa-save"></i> <span id="statusText">Salvo temporariamente</span>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('noturno', this)">
+        <i class="fas fa-moon"></i> Plantão Noturno
+      </button>
+      <button class="tab-btn" onclick="showTab('diurno', this)">
+        <i class="fas fa-sun"></i> Plantão Diurno
+      </button>
+    </div>
+
+    <!-- TAB NOTURNO -->
+    <div id="noturno" class="tab-content active">
+      <form id="formNoturno" onsubmit="salvarFormulario(event, 'noturno')">
+        
+        <!-- Identificação -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-calendar-alt"></i>
+              <h2>Identificação</h2>
+            </div>
+            <div class="input-group">
+              <label>Data do Plantão</label>
+              <input type="date" name="data_plantao" id="data_plantao_noturno" required>
+            </div>
+            <div class="input-group">
+              <label>Turno</label>
+              <input type="text" value="noturno" name="tipo" readonly style="background:var(--verde-bebe-light); font-weight:600; color:var(--verde-bebe-text);">
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-user-nurse"></i>
+              <h2>Plantonistas</h2>
+            </div>
+            <div id="plantonistasNoturno">
+              <div class="dynamic-field">
+                <input type="text" name="plantonistas[]" placeholder="Nome do plantonista" required>
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('plantonistasNoturno', 'plantonistas[]', 'Nome do plantonista')">
+              <i class="fas fa-plus"></i> Adicionar Plantonista
+            </button>
+            
+            <hr style="margin:25px 0; border-color:var(--verde-bebe-soft);">
+            
+            <h3 style="margin-bottom:15px; color:var(--rosa-bebe-text);"><i class="fas fa-hand-holding-heart"></i> Particulares</h3>
+            <div id="particularesNoturno">
+              <div class="dynamic-field">
+                <input type="text" name="particulares[]" placeholder="Ex: Ivone c/ Tainá">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('particularesNoturno', 'particulares[]', 'Ex: Nome c/ Cuidador')">
+              <i class="fas fa-plus"></i> Adicionar Particular
+            </button>
+          </div>
+        </div>
+
+        <!-- Procedimentos -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-clipboard-check"></i>
+            <h2>Procedimentos Realizados</h2>
+          </div>
+          <div class="checkbox-grid">
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="rondas" onchange="toggleCheckbox(this)">
+              <span>Realizado rondas</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="medicacao_noite" onchange="toggleCheckbox(this)">
+              <span>ADM medicação da noite</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="medicacao_jejum" onchange="toggleCheckbox(this)">
+              <span>ADM medicação jejum</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="colirio" onchange="toggleCheckbox(this)">
+              <span>ADM colírio</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="lanche" onchange="toggleCheckbox(this)">
+              <span>Ofertado lanche</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="troca" onchange="toggleCheckbox(this)">
+              <span>Troca + higienização</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="intimas" onchange="toggleCheckbox(this)">
+              <span>Íntimas realizadas</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- TRICOTOMIA -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-cut"></i>
+            <h2>Tricotomia Realizadas</h2>
+          </div>
+          <div id="tricotomiaNoturno">
+            <div class="tricotomia-card">
+              <div class="grid-3">
+                <div class="input-group">
+                  <label>Paciente</label>
+                  <input type="text" name="tric_paciente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Profissional</label>
+                  <input type="text" name="tric_profissional[]" placeholder="Quem realizou">
+                </div>
+                <div class="input-group">
+                  <label>Quantidade</label>
+                  <input type="text" name="tric_qtd[]" placeholder="Ex: 1 procedimento">
+                </div>
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.tricotomia-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addTricotomia('tricotomiaNoturno')">
+            <i class="fas fa-plus"></i> Adicionar Tricotomia
+          </button>
+        </div>
+
+        <!-- CURATIVOS -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-band-aid"></i>
+            <h2>Curativos Realizados</h2>
+          </div>
+          <div id="curativosNoturnoContainer">
+            <div class="curativo-card">
+              <div class="grid-3">
+                <div class="input-group">
+                  <label>Residente</label>
+                  <input type="text" name="cur_residente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Profissional</label>
+                  <input type="text" name="cur_profissional[]" placeholder="Quem realizou">
+                </div>
+                <div class="input-group">
+                  <label>Tipo/Local</label>
+                  <input type="text" name="cur_tipo[]" placeholder="Ex: Plano de úlceras">
+                </div>
+              </div>
+              <div class="input-group" style="margin-top:10px;">
+                <label>Observações do Curativo</label>
+                <input type="text" name="cur_obs[]" placeholder="Aspecto da ferida, material usado, etc.">
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.curativo-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addCurativo('curativosNoturnoContainer')">
+            <i class="fas fa-plus"></i> Adicionar Curativo
+          </button>
+        </div>
+
+        <!-- REMOÇÃO -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-ambulance"></i>
+            <h2>Remoções</h2>
+          </div>
+          <div id="remocaoNoturno">
+            <div class="remocao-card">
+              <div class="grid-2">
+                <div class="input-group">
+                  <label>Residente</label>
+                  <input type="text" name="rem_residente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Saída do Cuidador</label>
+                  <input type="text" name="rem_cuidador[]" placeholder="Nome do cuidador">
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:10px;">
+                <div class="input-group">
+                  <label>Data</label>
+                  <input type="date" name="rem_data[]">
+                </div>
+                <div class="input-group">
+                  <label>Hora</label>
+                  <input type="time" name="rem_hora[]">
+                </div>
+                <div class="input-group">
+                  <label>Destino</label>
+                  <input type="text" name="rem_destino[]" placeholder="Hospital, consulta, etc.">
+                </div>
+              </div>
+              <div class="input-group" style="margin-top:10px;">
+                <label>Observação</label>
+                <textarea name="rem_obs[]" rows="2" placeholder="Motivo da remoção, estado do paciente, etc."></textarea>
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.remocao-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addRemocao('remocaoNoturno')">
+            <i class="fas fa-plus"></i> Adicionar Remoção
+          </button>
+        </div>
+
+        <!-- Observações -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Observações Gerais</h2>
+          </div>
+          <div id="observacoesNoturno">
+            <div class="obs-item">
+              <div class="obs-icon"><i class="fas fa-user"></i></div>
+              <div class="obs-content">
+                <input type="text" name="observacoes[]" placeholder="Descreva a observação (residente, ocorrência, cuidados...)">
+              </div>
+              <button type="button" class="btn-remove-obs" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addObservacao('observacoesNoturno')">
+            <i class="fas fa-plus"></i> Adicionar Observação
+          </button>
+        </div>
+
+        <!-- Hospitalizados e Evacuação -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-procedures"></i>
+              <h2>Hospitalizados</h2>
+            </div>
+            <div id="hospitalizadosNoturno">
+              <div class="dynamic-field">
+                <input type="text" name="hospitalizados[]" placeholder="Nome do residente">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('hospitalizadosNoturno', 'hospitalizados[]', 'Nome do residente')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-poop"></i>
+              <h2>Evacuação</h2>
+            </div>
+            <div class="horizontal-list" id="evacuacaoNoturno">
+              <div class="horizontal-list-item">
+                <i class="fas fa-circle" style="font-size:8px;"></i>
+                <input type="text" name="evacuacao[]" placeholder="Nome" style="border:none; background:transparent; width:100px;">
+                <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addListItem('evacuacaoNoturno', 'evacuacao[]')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+
+        <!-- Insulinas e HGT -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-syringe"></i>
+              <h2>ADM Insulina</h2>
+            </div>
+            <div id="insulinasNoturno">
+              <div class="dynamic-field">
+                <input type="text" name="insulinas[]" placeholder="Ex: Miriam (noite)">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('insulinasNoturno', 'insulinas[]', 'Ex: Nome (horário)')">
+              <i class="fas fa-plus"></i> Adicionar Insulina
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-tint"></i>
+              <h2>HGT Jejum</h2>
+            </div>
+            <div id="hgtNoturnoContainer">
+              <div class="hgt-card">
+                <div class="grid-2">
+                  <div class="input-group">
+                    <label>Residente</label>
+                    <input type="text" name="hgt_nome[]" placeholder="Nome">
+                  </div>
+                  <div class="input-group">
+                    <label>Valor (mg/dL)</label>
+                    <input type="number" name="hgt_valor[]" placeholder="Ex: 110">
+                  </div>
+                </div>
+                <div class="obs-hgt">
+                  <div class="input-group">
+                    <label><i class="fas fa-comment-medical"></i> Observação do HGT</label>
+                    <input type="text" name="hgt_obs[]" placeholder="Ex: Jejum, antes do almoço, corrigido, etc.">
+                  </div>
+                </div>
+                <button type="button" class="btn-remove-field" onclick="this.closest('.hgt-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addHGT('hgtNoturnoContainer')">
+              <i class="fas fa-plus"></i> Adicionar HGT
+            </button>
+          </div>
+        </div>
+
+        <!-- Banhos -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-shower"></i>
+            <h2>Banhos Realizados</h2>
+          </div>
+          <div class="horizontal-list" id="banhosNoturno">
+            <div class="horizontal-list-item">
+              <i class="fas fa-user"></i>
+              <input type="text" name="banhos[]" placeholder="Nome do residente" style="border:none; background:transparent; width:150px;">
+              <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addListItem('banhosNoturno', 'banhos[]')">
+            <i class="fas fa-plus"></i> Adicionar Banho
+          </button>
+        </div>
+
+        <!-- Saída e Passagem -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-sign-out-alt"></i>
+              <h2>Saída - Plantonistas</h2>
+            </div>
+            <div id="saidaNoturno">
+              <div class="dynamic-field">
+                <input type="text" name="saida[]" placeholder="Nome do plantonista">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('saidaNoturno', 'saida[]', 'Nome do plantonista')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-check-circle"></i>
+              <h2>Passagem de Plantão</h2>
+            </div>
+            <div class="input-group">
+              <select name="passagem_plantao" required style="font-size:1.1rem; padding:16px;">
+                <option value="">Selecione...</option>
+                <option value="ordem">✅ PASSO PLANTÃO EM ORDEM</option>
+                <option value="pendencias">⚠️ PASSO PLANTÃO COM PENDÊNCIAS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="action-buttons">
+          <button type="button" class="btn-temp" onclick="salvarTemporariamente('noturno')">
+            <i class="fas fa-clock"></i> Salvar Temporariamente
+          </button>
+          <button type="button" class="btn-secondary" onclick="gerarPDF('noturno')">
+            <i class="fas fa-file-pdf"></i> Gerar PDF
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Salvar Permanentemente
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- TAB DIURNO -->
+    <div id="diurno" class="tab-content">
+      <form id="formDiurno" onsubmit="salvarFormulario(event, 'diurno')">
+        
+        <!-- Identificação -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-calendar-alt"></i>
+              <h2>Identificação</h2>
+            </div>
+            <div class="input-group">
+              <label>Data do Plantão</label>
+              <input type="date" name="data_plantao" id="data_plantao_diurno" required>
+            </div>
+            <div class="input-group">
+              <label>Turno</label>
+              <input type="text" value="diurno" name="tipo" readonly style="background:var(--verde-bebe-light); font-weight:600; color:var(--verde-bebe-text);">
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-clipboard-list"></i>
+              <h2>Responsáveis</h2>
+            </div>
+            <div class="input-group">
+              <label>Enfermagem</label>
+              <input type="text" name="enfermagem" placeholder="Nome do responsável">
+            </div>
+            <div class="input-group">
+              <label>Farmácia</label>
+              <input type="text" name="farmacia" placeholder="Nome do responsável">
+            </div>
+          </div>
+        </div>
+
+        <!-- Plantonistas -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-user-nurse"></i>
+            <h2>Plantonistas</h2>
+          </div>
+          <div id="plantonistasDiurno">
+            <div class="dynamic-field">
+              <input type="text" name="plantonistas[]" placeholder="Nome do plantonista" required>
+              <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addDynamicField('plantonistasDiurno', 'plantonistas[]', 'Nome do plantonista')">
+            <i class="fas fa-plus"></i> Adicionar Plantonista
+          </button>
+        </div>
+
+        <!-- Particulares -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h2>Particulares • Manhã</h2>
+          </div>
+          <div id="particularesDiurno">
+            <div class="dynamic-field">
+              <input type="text" name="particulares[]" placeholder="Ex: Célia c/ Gerlaine">
+              <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addDynamicField('particularesDiurno', 'particulares[]', 'Ex: Nome c/ Cuidador')">
+            <i class="fas fa-plus"></i> Adicionar Particular
+          </button>
+        </div>
+
+        <!-- Procedimentos -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-clipboard-check"></i>
+            <h2>Procedimentos Realizados</h2>
+          </div>
+          <div class="checkbox-grid">
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="rondas" onchange="toggleCheckbox(this)">
+              <span>Realizado rondas</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="curativos" onchange="toggleCheckbox(this)">
+              <span>Realizado curativos</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="banho_troca" onchange="toggleCheckbox(this)">
+              <span>Banho + troca fraldas</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="medicacao_cpm" onchange="toggleCheckbox(this)">
+              <span>ADM medicação CPM</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="colirio_cpm" onchange="toggleCheckbox(this)">
+              <span>ADM colírios CPM</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="decubito" onchange="toggleCheckbox(this)">
+              <span>Mudança decúbito</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="procedimentos[]" value="higiene_bucal" onchange="toggleCheckbox(this)">
+              <span>Higiene bucal</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- TRICOTOMIA DIURNO -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-cut"></i>
+            <h2>Tricotomia Realizadas</h2>
+          </div>
+          <div id="tricotomiaDiurno">
+            <div class="tricotomia-card">
+              <div class="grid-3">
+                <div class="input-group">
+                  <label>Paciente</label>
+                  <input type="text" name="tric_paciente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Profissional</label>
+                  <input type="text" name="tric_profissional[]" placeholder="Quem realizou">
+                </div>
+                <div class="input-group">
+                  <label>Quantidade</label>
+                  <input type="text" name="tric_qtd[]" placeholder="Ex: 1 procedimento">
+                </div>
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.tricotomia-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addTricotomia('tricotomiaDiurno')">
+            <i class="fas fa-plus"></i> Adicionar Tricotomia
+          </button>
+        </div>
+
+        <!-- CURATIVOS DIURNO -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-band-aid"></i>
+            <h2>Curativos Realizados</h2>
+          </div>
+          <div id="curativosDiurnoContainer">
+            <div class="curativo-card">
+              <div class="grid-3">
+                <div class="input-group">
+                  <label>Residente</label>
+                  <input type="text" name="cur_residente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Profissional</label>
+                  <input type="text" name="cur_profissional[]" placeholder="Quem realizou">
+                </div>
+                <div class="input-group">
+                  <label>Tipo/Local</label>
+                  <input type="text" name="cur_tipo[]" placeholder="Ex: Plano de úlceras">
+                </div>
+              </div>
+              <div class="input-group" style="margin-top:10px;">
+                <label>Observações do Curativo</label>
+                <input type="text" name="cur_obs[]" placeholder="Aspecto da ferida, material usado, etc.">
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.curativo-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addCurativo('curativosDiurnoContainer')">
+            <i class="fas fa-plus"></i> Adicionar Curativo
+          </button>
+        </div>
+
+        <!-- REMOÇÃO DIURNO -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-ambulance"></i>
+            <h2>Remoções</h2>
+          </div>
+          <div id="remocaoDiurno">
+            <div class="remocao-card">
+              <div class="grid-2">
+                <div class="input-group">
+                  <label>Residente</label>
+                  <input type="text" name="rem_residente[]" placeholder="Nome do residente">
+                </div>
+                <div class="input-group">
+                  <label>Saída do Cuidador</label>
+                  <input type="text" name="rem_cuidador[]" placeholder="Nome do cuidador">
+                </div>
+              </div>
+              <div class="grid-3" style="margin-top:10px;">
+                <div class="input-group">
+                  <label>Data</label>
+                  <input type="date" name="rem_data[]">
+                </div>
+                <div class="input-group">
+                  <label>Hora</label>
+                  <input type="time" name="rem_hora[]">
+                </div>
+                <div class="input-group">
+                  <label>Destino</label>
+                  <input type="text" name="rem_destino[]" placeholder="Hospital, consulta, etc.">
+                </div>
+              </div>
+              <div class="input-group" style="margin-top:10px;">
+                <label>Observação</label>
+                <textarea name="rem_obs[]" rows="2" placeholder="Motivo da remoção, estado do paciente, etc."></textarea>
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.remocao-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addRemocao('remocaoDiurno')">
+            <i class="fas fa-plus"></i> Adicionar Remoção
+          </button>
+        </div>
+
+        <!-- Observações -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Observações Gerais</h2>
+          </div>
+          <div id="observacoesDiurno">
+            <div class="obs-item">
+              <div class="obs-icon"><i class="fas fa-user"></i></div>
+              <div class="obs-content">
+                <input type="text" name="observacoes[]" placeholder="Descreva a observação (residente, ocorrência, cuidados...)">
+              </div>
+              <button type="button" class="btn-remove-obs" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addObservacao('observacoesDiurno')">
+            <i class="fas fa-plus"></i> Adicionar Observação
+          </button>
+        </div>
+
+        <!-- Banhos -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-shower"></i>
+            <h2>Banhos Realizados</h2>
+          </div>
+          <div class="horizontal-list" id="banhosDiurno">
+            <div class="horizontal-list-item">
+              <i class="fas fa-user"></i>
+              <input type="text" name="banhos[]" placeholder="Nome do residente" style="border:none; background:transparent; width:150px;">
+              <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addListItem('banhosDiurno', 'banhos[]')">
+            <i class="fas fa-plus"></i> Adicionar Banho
+          </button>
+        </div>
+
+        <!-- Insulinas, Curativos, ATB -->
+        <div class="grid-3">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-syringe"></i>
+              <h3>Insulinas ADM</h3>
+            </div>
+            <div id="insulinasDiurno">
+              <div class="dynamic-field">
+                <input type="text" name="insulinas[]" placeholder="Nome do residente">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('insulinasDiurno', 'insulinas[]', 'Nome do residente')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-band-aid"></i>
+              <h3>Curativos (Resumo)</h3>
+            </div>
+            <div id="curativosResumoDiurno">
+              <div class="dynamic-field">
+                <input type="text" name="curativos_resumo[]" placeholder="Ex: Carlos (Plano)">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('curativosResumoDiurno', 'curativos_resumo[]', 'Ex: Nome (tipo)')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-pills"></i>
+              <h3>Uso de ATB</h3>
+            </div>
+            <div id="atbDiurno">
+              <div class="dynamic-field">
+                <input type="text" name="atb[]" placeholder="Nome do residente">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('atbDiurno', 'atb[]', 'Nome do residente')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+
+        <!-- Hospitalizados e Visitas -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-procedures"></i>
+              <h3>Hospitalizados</h3>
+            </div>
+            <div id="hospitalizadosDiurno">
+              <div class="dynamic-field">
+                <input type="text" name="hospitalizados[]" placeholder="Nome do residente">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('hospitalizadosDiurno', 'hospitalizados[]', 'Nome do residente')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-users"></i>
+              <h3>Visitas Recebidas</h3>
+            </div>
+            <div class="horizontal-list" id="visitasDiurno">
+              <div class="horizontal-list-item">
+                <i class="fas fa-user-friends"></i>
+                <input type="text" name="visitas[]" placeholder="Nome do residente" style="border:none; background:transparent; width:150px;">
+                <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addListItem('visitasDiurno', 'visitas[]')">
+              <i class="fas fa-plus"></i> Adicionar Visita
+            </button>
+          </div>
+        </div>
+
+        <!-- Evacuação -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-poop"></i>
+            <h2>Evacuação</h2>
+          </div>
+          <div class="horizontal-list" id="evacuacaoDiurno">
+            <div class="horizontal-list-item">
+              <i class="fas fa-circle" style="font-size:8px;"></i>
+              <input type="text" name="evacuacao[]" placeholder="Nome" style="border:none; background:transparent; width:100px;">
+              <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addListItem('evacuacaoDiurno', 'evacuacao[]')">
+            <i class="fas fa-plus"></i> Adicionar
+          </button>
+        </div>
+
+        <!-- HGT Diurno -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-tint"></i>
+            <h2>HGT (Hemoglicoteste)</h2>
+          </div>
+          <div id="hgtDiurnoContainer">
+            <div class="hgt-card">
+              <div class="grid-2">
+                <div class="input-group">
+                  <label>Residente</label>
+                  <input type="text" name="hgt_nome[]" placeholder="Nome do residente">
+                </div>
+              </div>
+              <div class="grid-2" style="margin-top:10px;">
+                <div class="input-group">
+                  <label>Almoço (mg/dL)</label>
+                  <input type="number" name="hgt_almoco[]" placeholder="Ex: 110">
+                </div>
+                <div class="input-group">
+                  <label>Jantar (mg/dL)</label>
+                  <input type="number" name="hgt_jantar[]" placeholder="Ex: 95">
+                </div>
+              </div>
+              <div class="obs-hgt">
+                <div class="input-group">
+                  <label><i class="fas fa-comment-medical"></i> Observação do HGT</label>
+                  <input type="text" name="hgt_obs[]" placeholder="Ex: Corrigido, antes da refeição, etc.">
+                </div>
+              </div>
+              <button type="button" class="btn-remove-field" onclick="this.closest('.hgt-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <button type="button" class="btn-add" onclick="addHGTDiurno()">
+            <i class="fas fa-plus"></i> Adicionar HGT
+          </button>
+        </div>
+
+        <!-- Ingesta Hídrica -->
+        <div class="section-card">
+          <div class="section-title">
+            <i class="fas fa-tint"></i>
+            <h2>Ingesta Hídrica</h2>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <label>09h</label>
+              <input type="text" name="ingesta_09h" placeholder="ml ou ✔️">
+            </div>
+            <div class="timeline-item">
+              <label>11h</label>
+              <input type="text" name="ingesta_11h" placeholder="ml ou ✔️">
+            </div>
+            <div class="timeline-item">
+              <label>14h</label>
+              <input type="text" name="ingesta_14h" placeholder="ml ou ✔️">
+            </div>
+            <div class="timeline-item">
+              <label>16h</label>
+              <input type="text" name="ingesta_16h" placeholder="ml ou ✔️">
+            </div>
+            <div class="timeline-item">
+              <label>18h</label>
+              <input type="text" name="ingesta_18h" placeholder="ml ou ✔️">
+            </div>
+          </div>
+        </div>
+
+        <!-- Saída e Passagem -->
+        <div class="grid-2">
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-sign-out-alt"></i>
+              <h2>Saída - Plantonistas</h2>
+            </div>
+            <div id="saidaDiurno">
+              <div class="dynamic-field">
+                <input type="text" name="saida[]" placeholder="Nome do plantonista">
+                <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addDynamicField('saidaDiurno', 'saida[]', 'Nome do plantonista')">
+              <i class="fas fa-plus"></i> Adicionar
+            </button>
+          </div>
+
+          <div class="section-card">
+            <div class="section-title">
+              <i class="fas fa-check-circle"></i>
+              <h2>Passagem de Plantão</h2>
+            </div>
+            <div class="input-group">
+              <select name="passagem_plantao" required style="font-size:1.1rem; padding:16px;">
+                <option value="">Selecione...</option>
+                <option value="ordem">✅ PASSO O PLANTÃO EM ORDEM!</option>
+                <option value="pendencias">⚠️ PASSO O PLANTÃO COM PENDÊNCIAS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="action-buttons">
+          <button type="button" class="btn-temp" onclick="salvarTemporariamente('diurno')">
+            <i class="fas fa-clock"></i> Salvar Temporariamente
+          </button>
+          <button type="button" class="btn-secondary" onclick="gerarPDF('diurno')">
+            <i class="fas fa-file-pdf"></i> Gerar PDF
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Salvar Permanentemente
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="footer">
+      <p>LAR RESIDENCIAL ACONCHEGO • Cuidado e dedicação 24h</p>
+    </div>
+  </div>
+
+  <script>
+    // Usar as variáveis globais definidas no script bloqueante
+    const token = window.__token;
+    const usuario = window.__usuario;
+    const API_URL = 'http://localhost:3000/api';
+
+    // Aguardar DOM carregar para atualizar interface
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 DOM carregado, atualizando interface...');
+      
+      // Atualizar informações do usuário na barra
+      if (usuario) {
+        document.getElementById('userName').textContent = usuario.nome || 'Usuário';
+        document.getElementById('userLevel').textContent = usuario.nivel || 'Nível não definido';
+      }
+      
+      // Data atual nos campos de data
+      const hoje = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        if (!input.value) input.value = hoje;
+      });
+    });
+
+    // Alternar tabs
+    function showTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+      
+      document.getElementById('successMessage').classList.remove('active');
+    }
+
+    // Toggle checkbox visual
+    function toggleCheckbox(checkbox) {
+      const parent = checkbox.closest('.checkbox-item');
+      if (checkbox.checked) {
+        parent.classList.add('checked');
+      } else {
+        parent.classList.remove('checked');
+      }
+    }
+
+    // Adicionar campo dinâmico genérico
+    function addDynamicField(containerId, name, placeholder) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'dynamic-field';
+      div.innerHTML = `
+        <input type="text" name="${name}" placeholder="${placeholder}">
+        <button type="button" class="btn-remove-field" onclick="this.parentElement.remove()">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar item de lista horizontal
+    function addListItem(containerId, name) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'horizontal-list-item';
+      div.innerHTML = `
+        <i class="fas fa-user"></i>
+        <input type="text" name="${name}" placeholder="Nome" style="border:none; background:transparent; width:150px;">
+        <button type="button" class="btn-remove-small" onclick="this.parentElement.remove()">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar observação
+    function addObservacao(containerId) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'obs-item';
+      div.innerHTML = `
+        <div class="obs-icon"><i class="fas fa-user"></i></div>
+        <div class="obs-content">
+          <input type="text" name="observacoes[]" placeholder="Descreva a observação (residente, ocorrência, cuidados...)">
+        </div>
+        <button type="button" class="btn-remove-obs" onclick="this.parentElement.remove()">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar Tricotomia
+    function addTricotomia(containerId) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'tricotomia-card';
+      div.style.position = 'relative';
+      div.innerHTML = `
+        <div class="grid-3">
+          <div class="input-group">
+            <label>Paciente</label>
+            <input type="text" name="tric_paciente[]" placeholder="Nome do residente">
+          </div>
+          <div class="input-group">
+            <label>Profissional</label>
+            <input type="text" name="tric_profissional[]" placeholder="Quem realizou">
+          </div>
+          <div class="input-group">
+            <label>Quantidade</label>
+            <input type="text" name="tric_qtd[]" placeholder="Ex: 1 procedimento">
+          </div>
+        </div>
+        <button type="button" class="btn-remove-field" onclick="this.closest('.tricotomia-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar Curativo
+    function addCurativo(containerId) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'curativo-card';
+      div.style.position = 'relative';
+      div.innerHTML = `
+        <div class="grid-3">
+          <div class="input-group">
+            <label>Residente</label>
+            <input type="text" name="cur_residente[]" placeholder="Nome do residente">
+          </div>
+          <div class="input-group">
+            <label>Profissional</label>
+            <input type="text" name="cur_profissional[]" placeholder="Quem realizou">
+          </div>
+          <div class="input-group">
+            <label>Tipo/Local</label>
+            <input type="text" name="cur_tipo[]" placeholder="Ex: Plano de úlceras">
+          </div>
+        </div>
+        <div class="input-group" style="margin-top:10px;">
+          <label>Observações do Curativo</label>
+          <input type="text" name="cur_obs[]" placeholder="Aspecto da ferida, material usado, etc.">
+        </div>
+        <button type="button" class="btn-remove-field" onclick="this.closest('.curativo-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar Remoção
+    function addRemocao(containerId) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'remocao-card';
+      div.style.position = 'relative';
+      div.innerHTML = `
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Residente</label>
+            <input type="text" name="rem_residente[]" placeholder="Nome do residente">
+          </div>
+          <div class="input-group">
+            <label>Saída do Cuidador</label>
+            <input type="text" name="rem_cuidador[]" placeholder="Nome do cuidador">
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top:10px;">
+          <div class="input-group">
+            <label>Data</label>
+            <input type="date" name="rem_data[]">
+          </div>
+          <div class="input-group">
+            <label>Hora</label>
+            <input type="time" name="rem_hora[]">
+          </div>
+          <div class="input-group">
+            <label>Destino</label>
+            <input type="text" name="rem_destino[]" placeholder="Hospital, consulta, etc.">
+          </div>
+        </div>
+        <div class="input-group" style="margin-top:10px;">
+          <label>Observação</label>
+          <textarea name="rem_obs[]" rows="2" placeholder="Motivo da remoção, estado do paciente, etc."></textarea>
+        </div>
+        <button type="button" class="btn-remove-field" onclick="this.closest('.remocao-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar HGT Noturno
+    function addHGT(containerId) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'hgt-card';
+      div.style.position = 'relative';
+      div.innerHTML = `
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Residente</label>
+            <input type="text" name="hgt_nome[]" placeholder="Nome">
+          </div>
+          <div class="input-group">
+            <label>Valor (mg/dL)</label>
+            <input type="number" name="hgt_valor[]" placeholder="Ex: 110">
+          </div>
+        </div>
+        <div class="obs-hgt">
+          <div class="input-group">
+            <label><i class="fas fa-comment-medical"></i> Observação do HGT</label>
+            <input type="text" name="hgt_obs[]" placeholder="Ex: Jejum, antes do almoço, corrigido, etc.">
+          </div>
+        </div>
+        <button type="button" class="btn-remove-field" onclick="this.closest('.hgt-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Adicionar HGT Diurno
+    function addHGTDiurno() {
+      const container = document.getElementById('hgtDiurnoContainer');
+      const div = document.createElement('div');
+      div.className = 'hgt-card';
+      div.style.position = 'relative';
+      div.innerHTML = `
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Residente</label>
+            <input type="text" name="hgt_nome[]" placeholder="Nome do residente">
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="input-group">
+            <label>Almoço (mg/dL)</label>
+            <input type="number" name="hgt_almoco[]" placeholder="Ex: 110">
+          </div>
+          <div class="input-group">
+            <label>Jantar (mg/dL)</label>
+            <input type="number" name="hgt_jantar[]" placeholder="Ex: 95">
+          </div>
+        </div>
+        <div class="obs-hgt">
+          <div class="input-group">
+            <label><i class="fas fa-comment-medical"></i> Observação do HGT</label>
+            <input type="text" name="hgt_obs[]" placeholder="Ex: Corrigido, antes da refeição, etc.">
+          </div>
+        </div>
+        <button type="button" class="btn-remove-field" onclick="this.closest('.hgt-card').remove()" style="position:absolute; top:10px; right:10px; width:30px; height:30px;">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    }
+
+    // Salvar temporariamente (localStorage)
+    function salvarTemporariamente(tipo) {
+      const form = document.getElementById(`form${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`);
+      const formData = new FormData(form);
+      const data = {};
+      
+      for (let [key, value] of formData.entries()) {
+        if (data[key]) {
+          if (!Array.isArray(data[key])) {
+            data[key] = [data[key]];
+          }
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      }
+      
+      localStorage.setItem(`relatorio_temp_${tipo}`, JSON.stringify(data));
+      
+      const statusDiv = document.getElementById('statusSaved');
+      statusDiv.classList.add('active');
+      setTimeout(() => statusDiv.classList.remove('active'), 2000);
+    }
+
+    // Mostrar mensagem de sucesso
+    function showSuccess(text) {
+      const successDiv = document.getElementById('successMessage');
+      document.getElementById('successText').textContent = text;
+      successDiv.classList.add('active');
+      setTimeout(() => successDiv.classList.remove('active'), 3000);
+    }
+
+    // FUNÇÃO GERAR PDF CORRIGIDA - Substitua a função existente
+    async function gerarPDF(tipo) {
+      const { jsPDF } = window.jspdf;
+      
+      // Pegar o formulário ativo
+      const formId = tipo === 'noturno' ? 'formNoturno' : 'formDiurno';
+      const form = document.getElementById(formId);
+      
+      // Coletar dados do formulário
+      const formData = new FormData(form);
+      const dados = processarDadosFormulario(formData);
+      
+      // Validar se há dados mínimos
+      if (!dados.data_plantao) {
+        alert('Preencha a data do plantão antes de gerar o PDF');
+        return;
+      }
+      
+      if (dados.plantonistas.length === 0) {
+        alert('Adicione pelo menos um plantonista antes de gerar o PDF');
+        return;
+      }
+      
+      // Confirmar com o usuário
+      if (!confirm('Deseja gerar o PDF com os dados atuais do formulário?')) {
+        return;
+      }
+      
+      // Criar novo PDF
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      let y = 20;
+      const marginLeft = 20;
+      const pageHeight = 297; // Altura total A4
+      const marginBottom = 20; // Margem inferior
+      
+      // ===== FUNÇÕES AUXILIARES =====
+      function addText(text, size = 12, isBold = false, indent = 0) {
+        if (!text || text === '') return;
+        
+        pdf.setFontSize(size);
+        pdf.setFont('helvetica', isBold ? 'bold' : 'normal');
+        
+        // Remover caracteres especiais que podem causar problemas
+        const cleanText = String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        
+        // Quebrar texto em linhas (máximo 80 caracteres por linha)
+        const maxLength = 80;
+        let lines = [];
+        
+        if (cleanText.length > maxLength) {
+          // Quebrar em palavras
+          const words = cleanText.split(' ');
+          let currentLine = '';
+          
+          words.forEach(word => {
+            if ((currentLine + ' ' + word).length <= maxLength) {
+              currentLine += (currentLine ? ' ' : '') + word;
+            } else {
+              if (currentLine) lines.push(currentLine);
+              currentLine = word;
+            }
+          });
+          if (currentLine) lines.push(currentLine);
+        } else {
+          lines = [cleanText];
+        }
+        
+        // Verificar espaço antes de adicionar
+        lines.forEach(line => {
+          checkPageSpace(size);
+          pdf.text(line, marginLeft + indent, y);
+          y += size * 0.5;
+        });
+        
+        y += 2; // Espaço extra entre parágrafos
+      }
+      
+      function addLine() {
+        checkPageSpace(5);
+        y += 2;
+        pdf.setDrawColor(200, 200, 200);
+        pdf.line(marginLeft, y, marginLeft + 170, y);
+        y += 8;
+      }
+      
+      function addSection(title) {
+        checkPageSpace(15);
+        pdf.setFontSize(16);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setTextColor(61, 107, 84);
+        
+        // Remover acentos do título
+        const cleanTitle = String(title).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        pdf.text(cleanTitle, marginLeft, y);
+        y += 10;
+        pdf.setFontSize(10);
+        pdf.setTextColor(0, 0, 0);
+      }
+      
+      function checkPageSpace(neededSpace = 10) {
+        // Verificar se precisa de nova página (considerando margem inferior)
+        if (y > pageHeight - marginBottom - neededSpace) {
+          pdf.addPage();
+          y = 20;
+          return true;
+        }
+        return false;
+      }
+      
+      function addBulletPoint(text, size = 10, indent = 5) {
+        if (!text || text === '') return;
+        checkPageSpace(size);
+        pdf.setFontSize(size);
+        pdf.setFont('helvetica', 'normal');
+        
+        const cleanText = String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        pdf.text('•', marginLeft + indent, y);
+        
+        // Quebrar texto do bullet point
+        const maxLength = 70;
+        if (cleanText.length > maxLength) {
+          const words = cleanText.split(' ');
+          let currentLine = '';
+          let firstLine = true;
+          
+          words.forEach(word => {
+            if ((currentLine + ' ' + word).length <= maxLength) {
+              currentLine += (currentLine ? ' ' : '') + word;
+            } else {
+              if (firstLine) {
+                pdf.text(currentLine, marginLeft + indent + 5, y);
+                firstLine = false;
+              } else {
+                y += size * 0.5;
+                checkPageSpace(size);
+                pdf.text(currentLine, marginLeft + indent + 5, y);
+              }
+              currentLine = word;
+            }
+          });
+          
+          if (currentLine) {
+            if (firstLine) {
+              pdf.text(currentLine, marginLeft + indent + 5, y);
+            } else {
+              y += size * 0.5;
+              checkPageSpace(size);
+              pdf.text(currentLine, marginLeft + indent + 5, y);
+            }
+          }
+        } else {
+          pdf.text(cleanText, marginLeft + indent + 5, y);
+        }
+        
+        y += size * 0.7;
+      }
+      
+      // ===== CABEÇALHO =====
+      pdf.setFontSize(22);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(168, 213, 186);
+      pdf.text('LAR RESIDENCIAL ACONCHEGO', marginLeft, y);
+      y += 10;
+      
+      pdf.setFontSize(16);
+      pdf.setTextColor(244, 194, 194);
+      pdf.text(`RELATORIO DE ENFERMAGEM - ${tipo.toUpperCase()}`, marginLeft, y);
+      y += 15;
+      
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFontSize(10);
+      
+      // ===== IDENTIFICAÇÃO =====
+      addSection('IDENTIFICACAO');
+      addText(`Data do Plantao: ${dados.data_plantao || 'Nao informado'}`, 11);
+      addText(`Turno: ${dados.tipo || 'Nao informado'}`, 11);
+      
+      if (dados.enfermagem) addText(`Enfermagem: ${dados.enfermagem}`, 11);
+      if (dados.farmacia) addText(`Farmacia: ${dados.farmacia}`, 11);
+      
+      if (dados.plantonistas.length > 0) {
+        addText('Plantonistas:', 11, true);
+        dados.plantonistas.forEach(p => addBulletPoint(p, 10));
+      }
+      
+      if (dados.particulares?.length > 0) {
+        addText('Particulares:', 11, true);
+        dados.particulares.forEach(p => addBulletPoint(p, 10));
+      }
+      
+      addLine();
+      
+      // ===== PROCEDIMENTOS =====
+      if (dados.procedimentos?.length > 0) {
+        addSection('PROCEDIMENTOS REALIZADOS');
+        dados.procedimentos.forEach(proc => {
+          addBulletPoint(proc.replace(/_/g, ' '), 10);
+        });
+        addLine();
+      }
+      
+      // ===== TRICOTOMIAS =====
+      if (dados.tricotomias?.length > 0) {
+        addSection('TRICOTOMIAS REALIZADAS');
+        dados.tricotomias.forEach((tric, index) => {
+          checkPageSpace(25);
+          addText(`Tricotomia #${index + 1}:`, 11, true, 0);
+          if (tric.paciente) addText(`   Paciente: ${tric.paciente}`, 10, false, 5);
+          if (tric.profissional) addText(`   Profissional: ${tric.profissional}`, 10, false, 5);
+          if (tric.quantidade) addText(`   Quantidade: ${tric.quantidade}`, 10, false, 5);
+          y += 3;
+        });
+        addLine();
+      }
+      
+      // ===== CURATIVOS =====
+      if (dados.curativos?.length > 0) {
+        addSection('CURATIVOS REALIZADOS');
+        dados.curativos.forEach((cur, index) => {
+          checkPageSpace(30);
+          addText(`Curativo #${index + 1}:`, 11, true, 0);
+          if (cur.residente) addText(`   Residente: ${cur.residente}`, 10, false, 5);
+          if (cur.profissional) addText(`   Profissional: ${cur.profissional}`, 10, false, 5);
+          if (cur.tipo_local) addText(`   Tipo/Local: ${cur.tipo_local}`, 10, false, 5);
+          if (cur.observacoes) addText(`   Obs: ${cur.observacoes}`, 10, false, 5);
+          y += 3;
+        });
+        addLine();
+      }
+      
+      // ===== REMOÇÕES =====
+      if (dados.remocoes?.length > 0) {
+        addSection('REMOCOES');
+        dados.remocoes.forEach((rem, index) => {
+          checkPageSpace(35);
+          addText(`Remocao #${index + 1}:`, 11, true, 0);
+          if (rem.residente) addText(`   Residente: ${rem.residente}`, 10, false, 5);
+          if (rem.cuidador) addText(`   Cuidador: ${rem.cuidador}`, 10, false, 5);
+          if (rem.data_remocao) addText(`   Data: ${rem.data_remocao}`, 10, false, 5);
+          if (rem.hora_remocao) addText(`   Hora: ${rem.hora_remocao}`, 10, false, 5);
+          if (rem.destino) addText(`   Destino: ${rem.destino}`, 10, false, 5);
+          if (rem.observacoes) addText(`   Obs: ${rem.observacoes}`, 10, false, 5);
+          y += 5; // Espaço extra entre remoções
+        });
+        addLine();
+      }
+      
+      // ===== HGT =====
+      if (dados.hgt?.length > 0) {
+        addSection('HGT (HEMOGLICOTESTE)');
+        dados.hgt.forEach((h, index) => {
+          checkPageSpace(25);
+          if (h.residente) addText(`${h.residente}:`, 11, true, 0);
+          if (h.valor) addText(`   Valor: ${h.valor} mg/dL`, 10, false, 5);
+          if (h.almoco) addText(`   Almoco: ${h.almoco} mg/dL`, 10, false, 5);
+          if (h.jantar) addText(`   Jantar: ${h.jantar} mg/dL`, 10, false, 5);
+          if (h.observacoes) addText(`   Obs: ${h.observacoes}`, 10, false, 5);
+          y += 3;
+        });
+        addLine();
+      }
+      
+      // ===== INSULINAS =====
+      if (dados.insulinas?.length > 0) {
+        addSection('INSULINAS ADMINISTRADAS');
+        dados.insulinas.forEach(ins => addBulletPoint(ins, 10));
+        addLine();
+      }
+      
+      // ===== BANHOS =====
+      if (dados.banhos?.length > 0) {
+        addSection('BANHOS REALIZADOS');
+        dados.banhos.forEach(banho => addBulletPoint(banho, 10));
+        addLine();
+      }
+      
+      // ===== EVACUAÇÃO =====
+      if (dados.evacuacao?.length > 0) {
+        addSection('EVACUACAO');
+        dados.evacuacao.forEach(ev => addBulletPoint(ev, 10));
+        addLine();
+      }
+      
+      // ===== HOSPITALIZADOS =====
+      if (dados.hospitalizados?.length > 0) {
+        addSection('HOSPITALIZADOS');
+        dados.hospitalizados.forEach(hosp => addBulletPoint(hosp, 10));
+        addLine();
+      }
+      
+      // ===== INGESTA HÍDRICA =====
+      if (dados.ingesta?.length > 0) {
+        addSection('INGESTA HIDRICA');
+        dados.ingesta.forEach(ing => {
+          addText(`   ${ing.horario}: ${ing.valor}`, 10, false, 5);
+        });
+        addLine();
+      }
+      
+      // ===== OBSERVAÇÕES =====
+      if (dados.observacoes?.length > 0) {
+        addSection('OBSERVACOES GERAIS');
+        dados.observacoes.forEach(obs => {
+          checkPageSpace(15);
+          addBulletPoint(obs, 10);
+        });
+        addLine();
+      }
+      
+      // ===== SAÍDA =====
+      if (dados.saida?.length > 0) {
+        addSection('SAIDA DE PLANTONISTAS');
+        dados.saida.forEach(s => addBulletPoint(s, 10));
+        addLine();
+      }
+      
+      // ===== PASSAGEM DE PLANTÃO =====
+      if (dados.passagem_plantao) {
+        addSection('PASSAGEM DE PLANTAO');
+        const status = dados.passagem_plantao === 'ordem' 
+          ? 'PASSOU O PLANTAO EM ORDEM' 
+          : 'PASSOU O PLANTAO COM PENDENCIAS';
+        addText(`✓ ${status}`, 12, true, 5);
+        addLine();
+      }
+      
+      // ===== RODAPÉ =====
+      // Garantir que o rodapé fique na última página
+      if (y > pageHeight - 25) {
+        pdf.addPage();
+        y = 20;
+      }
+      
+      y = pageHeight - 15;
+      pdf.setFontSize(8);
+      pdf.setTextColor(150, 150, 150);
+      pdf.text('LAR RESIDENCIAL ACONCHEGO • Cuidado e dedicacao 24h', marginLeft, y);
+      pdf.text(`Documento gerado em: ${new Date().toLocaleString('pt-BR')}`, marginLeft, y - 4);
+      pdf.text(`Usuario: ${usuario?.nome || 'Nao informado'}`, marginLeft, y - 8);
+      
+      // Salvar PDF
+      pdf.save(`relatorio_${tipo}_${dados.data_plantao || new Date().toISOString().split('T')[0]}.pdf`);
+      
+      // Mostrar mensagem de sucesso
+      showSuccess('PDF gerado com sucesso!');
+    }
+
+    // Função para processar os dados do formulário
+    function processarDadosFormulario(formData) {
+      const dados = {
+        data_plantao: formData.get('data_plantao'),
+        tipo: formData.get('tipo'),
+        passagem_plantao: formData.get('passagem_plantao'),
+        enfermagem: formData.get('enfermagem') || null,
+        farmacia: formData.get('farmacia') || null,
+        plantonistas: formData.getAll('plantonistas[]').filter(v => v.trim() !== ''),
+        particulares: formData.getAll('particulares[]').filter(v => v.trim() !== ''),
+        procedimentos: formData.getAll('procedimentos[]').filter(v => v.trim() !== ''),
+        observacoes: formData.getAll('observacoes[]').filter(v => v.trim() !== ''),
+        hospitalizados: formData.getAll('hospitalizados[]').filter(v => v.trim() !== ''),
+        evacuacao: formData.getAll('evacuacao[]').filter(v => v.trim() !== ''),
+        banhos: formData.getAll('banhos[]').filter(v => v.trim() !== ''),
+        insulinas: formData.getAll('insulinas[]').filter(v => v.trim() !== ''),
+        saida: formData.getAll('saida[]').filter(v => v.trim() !== ''),
+        curativos: [],
+        remocoes: [],
+        hgt: [],
+        tricotomias: [],
+        ingesta: []
+      };
+
+      // Processar curativos
+      const curResidentes = formData.getAll('cur_residente[]');
+      const curProfissionais = formData.getAll('cur_profissional[]');
+      const curTipos = formData.getAll('cur_tipo[]');
+      const curObs = formData.getAll('cur_obs[]');
+      
+      for (let i = 0; i < curResidentes.length; i++) {
+        if (curResidentes[i] && curResidentes[i].trim() !== '') {
+          dados.curativos.push({
+            residente: curResidentes[i],
+            profissional: curProfissionais[i] || '',
+            tipo_local: curTipos[i] || '',
+            observacoes: curObs[i] || ''
+          });
+        }
+      }
+
+      // Processar remoções
+      const remResidentes = formData.getAll('rem_residente[]');
+      const remCuidadores = formData.getAll('rem_cuidador[]');
+      const remDatas = formData.getAll('rem_data[]');
+      const remHoras = formData.getAll('rem_hora[]');
+      const remDestinos = formData.getAll('rem_destino[]');
+      const remObs = formData.getAll('rem_obs[]');
+      
+      for (let i = 0; i < remResidentes.length; i++) {
+        if (remResidentes[i] && remResidentes[i].trim() !== '') {
+          dados.remocoes.push({
+            residente: remResidentes[i],
+            cuidador: remCuidadores[i] || null,
+            data_remocao: remDatas[i] || null,
+            hora_remocao: remHoras[i] || null,
+            destino: remDestinos[i] || '',
+            observacoes: remObs[i] || null
+          });
+        }
+      }
+
+      // Processar HGT Noturno
+      const hgtNomes = formData.getAll('hgt_nome[]');
+      const hgtValores = formData.getAll('hgt_valor[]');
+      const hgtObs = formData.getAll('hgt_obs[]');
+      
+      for (let i = 0; i < hgtNomes.length; i++) {
+        if (hgtNomes[i] && hgtNomes[i].trim() !== '') {
+          dados.hgt.push({
+            residente: hgtNomes[i],
+            valor: hgtValores[i] || null,
+            observacoes: hgtObs[i] || null
+          });
+        }
+      }
+
+      // Processar HGT Diurno (almoco/jantar)
+      const hgtDiurnoNomes = formData.getAll('hgt_nome[]').slice(hgtNomes.length);
+      const hgtAlmoco = formData.getAll('hgt_almoco[]');
+      const hgtJantar = formData.getAll('hgt_jantar[]');
+      const hgtDiurnoObs = formData.getAll('hgt_obs[]').slice(hgtObs.length);
+      
+      for (let i = 0; i < hgtDiurnoNomes.length; i++) {
+        if (hgtDiurnoNomes[i] && hgtDiurnoNomes[i].trim() !== '') {
+          dados.hgt.push({
+            residente: hgtDiurnoNomes[i],
+            almoco: hgtAlmoco[i] || null,
+            jantar: hgtJantar[i] || null,
+            observacoes: hgtDiurnoObs[i] || null
+          });
+        }
+      }
+
+      // Processar tricotomias
+      const tricPacientes = formData.getAll('tric_paciente[]');
+      const tricProfissionais = formData.getAll('tric_profissional[]');
+      const tricQtds = formData.getAll('tric_qtd[]');
+      
+      for (let i = 0; i < tricPacientes.length; i++) {
+        if (tricPacientes[i] && tricPacientes[i].trim() !== '') {
+          dados.tricotomias.push({
+            paciente: tricPacientes[i],
+            profissional: tricProfissionais[i] || '',
+            quantidade: tricQtds[i] || null
+          });
+        }
+      }
+
+      // Processar ingesta hídrica
+      const horarios = ['09h', '11h', '14h', '16h', '18h'];
+      horarios.forEach(horario => {
+        const valor = formData.get(`ingesta_${horario}`);
+        if (valor && valor.trim() !== '') {
+          dados.ingesta.push({
+            horario: horario,
+            valor: valor
+          });
+        }
+      });
+
+      return dados;
+    }
+
+    // Salvar formulário permanentemente no banco
+    async function salvarFormulario(event, tipo) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      // Processar dados
+      const dados = processarDadosFormulario(formData);
+      
+      // Validar campos obrigatórios
+      if (!dados.data_plantao) {
+        alert('Por favor, preencha a data do plantão');
+        return;
+      }
+      
+      if (!dados.passagem_plantao) {
+        alert('Por favor, selecione a passagem de plantão');
+        return;
+      }
+
+      if (dados.plantonistas.length === 0) {
+        alert('Por favor, adicione pelo menos um plantonista');
+        return;
+      }
+
+      console.log('Enviando dados para API:', dados);
+
+      try {
+        const token = sessionStorage.getItem('token');
+        const response = await fetch(`${API_URL}/relatorios`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(dados)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.sucesso) {
+          showSuccess(`Relatório ${tipo.toUpperCase()} salvo com sucesso! ID: ${result.id}`);
+          
+          // Limpar localStorage temporário
+          localStorage.removeItem(`relatorio_temp_${tipo}`);
+          
+          // Opção 5: Perguntar se quer gerar PDF agora
+          if (confirm(`Relatório salvo com sucesso!\n\nDeseja gerar o PDF deste relatório agora?`)) {
+            // Re-coletar dados do formulário (já estão preenchidos)
+            gerarPDF(tipo);
+          }
+          
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          alert('Erro ao salvar relatório: ' + (result.erro || 'Erro desconhecido'));
+        }
+      } catch (error) {
+        console.error('Erro ao salvar relatório:', error);
+        alert('Erro ao conectar com o servidor. Verifique se a API está rodando.');
+      }
+    }
+  </script>
+</body>
+</html>

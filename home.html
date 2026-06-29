@@ -1,0 +1,1971 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAR RESIDENCIAL ACONCHEGO • Painel Principal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* Verde Bebê - tons suaves */
+      --verde-bebe: #A8D5BA;
+      --verde-bebe-light: #E8F5E9;
+      --verde-bebe-soft: #C8E6C9;
+      --verde-bebe-dark: #558B6E;
+      --verde-bebe-text: #3D6B54;
+      
+      /* Rosa Bebê - tons suaves */
+      --rosa-bebe: #F4C2C2;
+      --rosa-bebe-light: #FCE4EC;
+      --rosa-bebe-soft: #F8E1E4;
+      --rosa-bebe-dark: #C98B8B;
+      --rosa-bebe-text: #A66B6B;
+      
+      /* Cores neutras suaves */
+      --fundo: #FAFCFB;
+      --branco: #FFFFFF;
+      --texto: #5A5A5A;
+      --texto-claro: #7A7A7A;
+      --borda: #E8EDE9;
+      
+      /* Cores de nível - tons suaves */
+      --admin: #C9A8D5;
+      --enfermeiro: #A8C9E8;
+      --tecnico: #F4D7A7;
+      --estagiario: #C8C8C8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(180deg, var(--fundo) 0%, var(--verde-bebe-light) 50%, var(--rosa-bebe-light) 100%);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      color: var(--texto);
+    }
+
+    /* ===== HEADER ===== */
+    .top-header {
+      background: var(--branco);
+      padding: 15px 30px;
+      box-shadow: 0 2px 20px rgba(168, 213, 186, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--branco);
+      font-size: 24px;
+      box-shadow: 0 4px 15px rgba(168, 213, 186, 0.3);
+    }
+
+    .logo-text h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
+      color: var(--verde-bebe-text);
+      font-weight: 600;
+    }
+
+    .logo-text p {
+      font-size: 0.8rem;
+      color: var(--rosa-bebe-text);
+      font-weight: 500;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: var(--texto);
+      font-size: 0.95rem;
+    }
+
+    .user-level {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .level-ADMIN { background: var(--admin); color: var(--branco); }
+    .level-ENFERMEIRO { background: var(--enfermeiro); color: var(--branco); }
+    .level-TECNICO { background: var(--tecnico); color: var(--branco); }
+    .level-ESTAGIARIO { background: var(--estagiario); color: var(--branco); }
+
+    .btn-logout {
+      background: linear-gradient(135deg, var(--rosa-bebe) 0%, var(--rosa-bebe-dark) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(244, 194, 194, 0.3);
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 194, 194, 0.4);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .welcome-section {
+      background: linear-gradient(135deg, var(--verde-bebe-soft) 0%, var(--rosa-bebe-soft) 100%);
+      border-radius: 25px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 2px solid var(--branco);
+      box-shadow: 0 8px 30px rgba(168, 213, 186, 0.15);
+    }
+
+    .welcome-section h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
+      color: var(--verde-bebe-text);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .welcome-section p {
+      color: var(--texto-claro);
+      font-size: 1.05rem;
+    }
+
+    /* ===== MENU CARDS ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .menu-card {
+      background: var(--branco);
+      border-radius: 20px;
+      padding: 25px;
+      border: 2px solid var(--borda);
+      box-shadow: 0 5px 20px rgba(168, 213, 186, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      transition: width 0.3s ease;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(168, 213, 186, 0.2);
+      border-color: var(--verde-bebe);
+    }
+
+    .menu-card:hover::before {
+      width: 6px;
+    }
+
+    .menu-card.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+
+    .menu-card.disabled:hover {
+      transform: none;
+      box-shadow: 0 5px 20px rgba(168, 213, 186, 0.1);
+    }
+
+    .menu-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--verde-bebe-light) 0%, var(--rosa-bebe-light) 100%);
+      color: var(--verde-bebe-text);
+      box-shadow: 0 4px 15px rgba(168, 213, 186, 0.15);
+    }
+
+    .menu-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      color: var(--verde-bebe-text);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .menu-card p {
+      font-size: 0.9rem;
+      color: var(--texto-claro);
+      line-height: 1.5;
+    }
+
+    .access-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .access-all { background: var(--verde-bebe-soft); color: var(--verde-bebe-text); }
+    .access-admin { background: var(--admin); color: var(--branco); }
+    .access-enf { background: var(--enfermeiro); color: var(--branco); }
+    .access-tec { background: var(--tecnico); color: var(--branco); }
+
+    /* ===== SEÇÕES ESPECÍFICAS POR NÍVEL ===== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 40px 0 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--verde-bebe-soft);
+    }
+
+    .section-title i {
+      font-size: 24px;
+      color: var(--rosa-bebe-text);
+    }
+
+    .section-title h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      color: var(--verde-bebe-text);
+      font-weight: 600;
+    }
+
+    /* ===== RESUMO/STATS ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stats-grid.hidden {
+      display: none;
+    }
+
+    .stat-card {
+      background: var(--branco);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      border: 2px solid var(--verde-bebe-soft);
+      box-shadow: 0 5px 20px rgba(168, 213, 186, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(168, 213, 186, 0.15);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-bebe-text);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-label {
+      color: var(--texto-claro);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(90, 90, 90, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--branco);
+      border-radius: 25px;
+      padding: 30px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 2px solid var(--verde-bebe);
+      box-shadow: 0 25px 50px rgba(168, 213, 186, 0.25);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--verde-bebe-soft);
+    }
+
+    .modal-header h3 {
+      font-family: 'Poppins', sans-serif;
+      color: var(--verde-bebe-text);
+      font-weight: 600;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rosa-bebe-text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close:hover {
+      color: var(--rosa-bebe-dark);
+    }
+
+    /* ===== GERENCIAMENTO DE USUÁRIOS ===== */
+    .user-management {
+      background: var(--branco);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 20px rgba(168, 213, 186, 0.1);
+      border: 2px solid var(--verde-bebe-soft);
+    }
+
+    .btn-new-user {
+      background: linear-gradient(135deg, var(--verde-bebe) 0%, var(--rosa-bebe) 100%);
+      color: var(--branco);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(168, 213, 186, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-new-user:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(168, 213, 186, 0.4);
+    }
+
+    .user-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .user-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: var(--fundo);
+      border-radius: 12px;
+      border: 2px solid var(--verde-bebe-soft);
+      transition: all 0.3s ease;
+    }
+
+    .user-item:hover {
+      border-color: var(--verde-bebe);
+      background: var(--verde-bebe-light);
+    }
+
+    .user-item-info h4 {
+      color: var(--verde-bebe-text);
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .user-item-info p {
+      font-size: 0.85rem;
+      color: var(--texto-claro);
+    }
+
+    .btn-action {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+      background: var(--verde-bebe);
+      color: var(--branco);
+    }
+
+    .btn-edit:hover {
+      background: var(--verde-bebe-dark);
+    }
+
+    .btn-delete {
+      background: var(--rosa-bebe);
+      color: var(--branco);
+    }
+
+    .btn-delete:hover {
+      background: var(--rosa-bebe-dark);
+    }
+
+    .btn-view {
+      background: var(--verde-bebe-soft);
+      color: var(--verde-bebe-text);
+    }
+
+    .btn-view:hover {
+      background: var(--verde-bebe);
+      color: var(--branco);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--verde-bebe-text);
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--verde-bebe-soft);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      background: var(--branco);
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      outline: none;
+      border-color: var(--rosa-bebe);
+      box-shadow: 0 0 0 3px rgba(244, 194, 194, 0.2);
+    }
+
+    .input-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    @media (max-width: 768px) {
+      .top-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .user-info {
+        text-align: center;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="top-header">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <div class="logo-text">
+        <h1>LAR RESIDENCIAL ACONCHEGO</h1>
+        <p>Sistema De Enfermagem</p>
+      </div>
+    </div>
+    
+    <div class="user-area">
+      <div class="user-info">
+        <div class="user-name" id="displayUserName">Carregando...</div>
+        <span class="user-level" id="displayUserLevel">...</span>
+      </div>
+      <button class="btn-logout" onclick="fazerLogout()">
+        <i class="fas fa-sign-out-alt"></i> Sair
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Welcome -->
+    <div class="welcome-section">
+      <h2 id="welcomeMessage">Bem-vindo(a)!</h2>
+      <p id="welcomeSubtext">Acesso ao sistema de relatórios de enfermagem.</p>
+    </div>
+
+    <!-- Stats - APENAS PARA ADMIN -->
+    <div class="stats-grid hidden" id="statsSection">
+      <div class="stat-card">
+        <div class="stat-number" id="statRelatorios">0</div>
+        <div class="stat-label">Relatórios Hoje</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statPacientes">0</div>
+        <div class="stat-label">Pacientes Ativos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="statPlantonistas">0</div>
+        <div class="stat-label">Plantonistas</div>
+      </div>
+    </div>
+
+    <!-- Menu Principal -->
+    <div class="section-title">
+      <i class="fas fa-th-large"></i>
+      <h2>Menu Principal</h2>
+    </div>
+
+    <div class="menu-grid" id="menuGrid">
+      <!-- Cards serão inseridos via JavaScript baseado no nível -->
+    </div>
+
+  </main>
+
+  <!-- Modal de Cadastro de Usuário -->
+  <div class="modal-overlay" id="modalCadastroUsuario">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-plus"></i> Cadastrar Novo Usuário</h3>
+        <button class="btn-close" onclick="fecharModal('modalCadastroUsuario')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form onsubmit="salvarUsuario(event)">
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Nome Completo</label>
+            <input type="text" id="newUserNome" required>
+          </div>
+          <div class="input-group">
+            <label>Idade</label>
+            <input type="number" id="newUserIdade" required min="18" max="100">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Sexo</label>
+            <select id="newUserSexo" required>
+              <option value="">Selecione...</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Telefone</label>
+            <input type="text" id="newUserTelefone" placeholder="(99) 99999-9999" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Login</label>
+            <input type="text" id="newUserUsuario" required>
+          </div>
+          <div class="input-group">
+            <label>Senha</label>
+            <input type="password" id="newUserSenha" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Nível de Acesso</label>
+          <select id="newUserNivel" required>
+            <option value="">Selecione...</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="ENFERMEIRO">Enfermeiro</option>
+            <option value="TECNICO">Técnico de Enfermagem</option>
+            <option value="ESTAGIARIO">Estagiário</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-new-user" style="width: 100%; justify-content: center; margin-top: 20px;">
+          <i class="fas fa-save"></i> Salvar Usuário
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Autenticação de Administrador -->
+  <div class="modal-overlay" id="modalAuthAdmin">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-lock"></i> Acesso Restrito</h3>
+        <button class="btn-close" onclick="fecharModal('modalAuthAdmin')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--admin) 0%, #B8A0C8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 36px;">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <p style="color: var(--texto-claro); margin-bottom: 20px;">Digite a senha do administrador para acessar o gerenciamento de usuários.</p>
+        <div class="input-group">
+          <label><i class="fas fa-key"></i> Senha do Administrador</label>
+          <input type="password" id="adminAuthSenha" placeholder="Digite sua senha" style="text-align: center; font-size: 1.1rem;">
+        </div>
+        <p id="authError" style="color: var(--rosa-bebe-dark); font-size: 0.85rem; margin-top: 10px; display: none;">
+          <i class="fas fa-exclamation-circle"></i> Senha incorreta. Tente novamente.
+        </p>
+        <button class="btn-new-user" onclick="validarSenhaAdmin()" style="width: 100%; justify-content: center; margin-top: 20px;">
+          <i class="fas fa-unlock"></i> Acessar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Lista de Usuários (Gerenciamento Completo) -->
+  <div class="modal-overlay" id="modalListaUsuarios">
+    <div class="modal-content" style="max-width: 900px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-users-cog"></i> Gerenciamento de Usuários</h3>
+        <button class="btn-close" onclick="fecharModal('modalListaUsuarios')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div style="margin-bottom: 20px;">
+        <button class="btn-new-user" onclick="abrirModalCadastroUsuario(); fecharModal('modalListaUsuarios');">
+          <i class="fas fa-user-plus"></i> Cadastrar Novo Usuário
+        </button>
+      </div>
+      <div class="user-list" id="modalUserList">
+        <!-- Preenchido via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Edição de Usuário -->
+  <div class="modal-overlay" id="modalEditarUsuario">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-edit"></i> Editar Usuário</h3>
+        <button class="btn-close" onclick="fecharModal('modalEditarUsuario')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form onsubmit="salvarEdicaoUsuario(event)">
+        <input type="hidden" id="editUserId">
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Nome Completo</label>
+            <input type="text" id="editUserNome" required>
+          </div>
+          <div class="input-group">
+            <label>Idade</label>
+            <input type="number" id="editUserIdade" required min="18" max="100">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Sexo</label>
+            <select id="editUserSexo" required>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Telefone</label>
+            <input type="text" id="editUserTelefone" placeholder="(99) 99999-9999" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <label>Login</label>
+            <input type="text" id="editUserUsuario" required>
+          </div>
+          <div class="input-group">
+            <label>Nova Senha <small style="color: var(--texto-claro);">(deixe em branco para manter)</small></label>
+            <input type="password" id="editUserSenha" placeholder="••••••">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Nível de Acesso</label>
+          <select id="editUserNivel" required>
+            <option value="ADMIN">Administrador</option>
+            <option value="ENFERMEIRO">Enfermeiro</option>
+            <option value="TECNICO">Técnico de Enfermagem</option>
+            <option value="ESTAGIARIO">Estagiário</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Status</label>
+          <select id="editUserAtivo" required>
+            <option value="true">Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-new-user" style="width: 100%; justify-content: center; margin-top: 20px;">
+          <i class="fas fa-save"></i> Salvar Alterações
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== NOVOS MODAIS PARA PACIENTES ===== -->
+
+  <!-- Modal de Autenticação de Administrador para Pacientes -->
+  <div class="modal-overlay" id="modalAuthAdminPacientes">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-lock"></i> Acesso Restrito - Pacientes</h3>
+        <button class="btn-close" onclick="fecharModal('modalAuthAdminPacientes')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--admin) 0%, #B8A0C8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 36px;">
+          <i class="fas fa-procedures"></i>
+        </div>
+        <p style="color: var(--texto-claro); margin-bottom: 20px;">Digite a senha do administrador para acessar o gerenciamento de pacientes.</p>
+        <div class="input-group">
+          <label><i class="fas fa-key"></i> Senha do Administrador</label>
+          <input type="password" id="adminAuthSenhaPacientes" placeholder="Digite sua senha" style="text-align: center; font-size: 1.1rem;">
+        </div>
+        <p id="authErrorPacientes" style="color: var(--rosa-bebe-dark); font-size: 0.85rem; margin-top: 10px; display: none;">
+          <i class="fas fa-exclamation-circle"></i> Senha incorreta. Tente novamente.
+        </p>
+        <button class="btn-new-user" onclick="validarSenhaAdminPacientes()" style="width: 100%; justify-content: center; margin-top: 20px;">
+          <i class="fas fa-unlock"></i> Acessar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Lista de Pacientes -->
+  <div class="modal-overlay" id="modalListaPacientes">
+    <div class="modal-content" style="max-width: 1000px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-procedures"></i> Gerenciamento de Pacientes</h3>
+        <button class="btn-close" onclick="fecharModal('modalListaPacientes')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- Barra de busca e filtros -->
+      <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 250px;">
+          <div class="input-group" style="margin-bottom: 0;">
+            <input type="text" id="buscaPaciente" placeholder="Buscar por nome, quarto..." style="padding: 12px; border-radius: 25px;">
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <select id="filtroAtivoPaciente" style="padding: 12px; border-radius: 25px; border: 2px solid var(--verde-bebe-soft);">
+            <option value="todos">Todos</option>
+            <option value="ativos" selected>Ativos</option>
+            <option value="inativos">Inativos</option>
+          </select>
+          <button class="btn-new-user" onclick="abrirModalCadastroPaciente()">
+            <i class="fas fa-user-plus"></i> Novo Paciente
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabela de Pacientes -->
+      <div style="overflow-x: auto;">
+        <table class="data-table" style="width: 100%; min-width: 800px; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Nome</th>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Idade/Sexo</th>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Quarto/Leito</th>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Responsável</th>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Status</th>
+              <th style="text-align: left; padding: 12px; background: var(--verde-bebe-light);">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="pacientesTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 30px; color: var(--texto-claro);">
+                <i class="fas fa-spinner fa-spin"></i> Carregando...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Cadastro/Edição de Paciente -->
+  <div class="modal-overlay" id="modalCadastroPaciente">
+    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 id="modalPacienteTitulo"><i class="fas fa-user-plus"></i> Cadastrar Novo Paciente</h3>
+        <button class="btn-close" onclick="fecharModal('modalCadastroPaciente')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="formPaciente" onsubmit="salvarPaciente(event)">
+        <input type="hidden" id="pacienteId">
+        
+        <!-- Dados Pessoais -->
+        <div style="background: var(--verde-bebe-light); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+          <h4 style="color: var(--verde-bebe-text); margin-bottom: 15px;"><i class="fas fa-user"></i> Dados Pessoais</h4>
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Nome Completo *</label>
+              <input type="text" id="pacienteNome" required>
+            </div>
+            <div class="input-group">
+              <label>Data de Nascimento *</label>
+              <input type="date" id="pacienteDataNasc" required onchange="calcularIdade()">
+            </div>
+          </div>
+          
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Idade</label>
+              <input type="text" id="pacienteIdade" readonly style="background: var(--fundo);">
+            </div>
+            <div class="input-group">
+              <label>Sexo *</label>
+              <select id="pacienteSexo" required>
+                <option value="">Selecione...</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contato e Responsável -->
+        <div style="background: var(--rosa-bebe-light); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+          <h4 style="color: var(--rosa-bebe-text); margin-bottom: 15px;"><i class="fas fa-phone"></i> Contato e Responsável</h4>
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Nome do Responsável</label>
+              <input type="text" id="pacienteResponsavelNome" placeholder="Nome do familiar/responsável">
+            </div>
+            <div class="input-group">
+              <label>Telefone do Responsável</label>
+              <input type="text" id="pacienteResponsavelTelefone" placeholder="(99) 99999-9999" oninput="mascaraTelefone(this)">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Localização -->
+        <div style="background: var(--verde-bebe-light); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+          <h4 style="color: var(--verde-bebe-text); margin-bottom: 15px;"><i class="fas fa-map-marker-alt"></i> Localização</h4>
+          <div class="grid-2">
+            <div class="input-group">
+              <label>Quarto</label>
+              <input type="text" id="pacienteQuarto" placeholder="Ex: 101, 102...">
+            </div>
+            <div class="input-group">
+              <label>Leito</label>
+              <input type="text" id="pacienteLeito" placeholder="Ex: A, B, 1, 2...">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Data de Internação</label>
+            <input type="date" id="pacienteDataInternacao">
+          </div>
+        </div>
+        
+        <!-- Informações Médicas -->
+        <div style="background: var(--rosa-bebe-light); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+          <h4 style="color: var(--rosa-bebe-text); margin-bottom: 15px;"><i class="fas fa-notes-medical"></i> Informações Médicas</h4>
+          <div class="input-group">
+            <label>Diagnóstico Principal</label>
+            <textarea id="pacienteDiagnostico" rows="2" placeholder="Diagnóstico principal do paciente"></textarea>
+          </div>
+          <div class="input-group">
+            <label>Alergias</label>
+            <textarea id="pacienteAlergias" rows="2" placeholder="Lista de alergias conhecidas"></textarea>
+          </div>
+          <div class="input-group">
+            <label>Medicamentos Contínuos</label>
+            <textarea id="pacienteMedicamentos" rows="2" placeholder="Medicamentos de uso contínuo"></textarea>
+          </div>
+        </div>
+        
+        <!-- Observações -->
+        <div class="input-group">
+          <label>Observações Gerais</label>
+          <textarea id="pacienteObservacoes" rows="3" placeholder="Observações importantes sobre o paciente"></textarea>
+        </div>
+        
+        <!-- Status -->
+        <div class="input-group" style="margin-top: 15px;">
+          <label style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="pacienteAtivo" checked style="width: 18px; height: 18px;">
+            <span>Paciente Ativo</span>
+          </label>
+        </div>
+        
+        <!-- Botões -->
+        <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 25px;">
+          <button type="button" class="btn-secondary" onclick="fecharModal('modalCadastroPaciente')">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Salvar Paciente
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Visualização de Paciente -->
+  <div class="modal-overlay" id="modalVisualizarPaciente">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-md"></i> Detalhes do Paciente</h3>
+        <button class="btn-close" onclick="fecharModal('modalVisualizarPaciente')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="detalhesPaciente" style="padding: 10px 0;">
+        <!-- Preenchido via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // API Base URL
+    const API_URL = 'http://localhost:3000/api';
+
+    // ===== VERIFICAÇÃO DE SESSÃO MELHORADA =====
+    console.log('🔍 Verificando sessão em home.html...');
+    
+    let token = null;
+    let sessao = null;
+    
+    try {
+        token = sessionStorage.getItem('token');
+        const sessaoStr = sessionStorage.getItem('usuario');
+        
+        console.log('📦 Token no sessionStorage:', token ? 'Presente' : 'Ausente');
+        console.log('📦 Usuário no sessionStorage:', sessaoStr ? 'Presente' : 'Ausente');
+        
+        if (sessaoStr) {
+            try {
+                sessao = JSON.parse(sessaoStr);
+                console.log('✅ Sessão válida:', sessao.nome, '- Nível:', sessao.nivel);
+            } catch (e) {
+                console.error('❌ Erro ao parsear usuário:', e);
+                sessionStorage.removeItem('usuario');
+                window.location.href = 'login.html';
+                throw e;
+            }
+        }
+        
+        if (!token || !sessao) {
+            console.log('❌ Sessão não encontrada - Redirecionando para login');
+            window.location.href = 'login.html';
+        }
+        
+    } catch (error) {
+        console.error('❌ Erro na verificação de sessão:', error);
+        window.location.href = 'login.html';
+    }
+
+    // Configurações de acesso por nível
+    const permissoes = {
+      ADMIN: {
+        nome: 'Administrador',
+        cor: 'level-ADMIN',
+        menus: [
+          { id: 'relatorio_noturno', titulo: 'Relatório Noturno', desc: 'Preencher relatório do plantão noturno', icon: 'fa-moon', url: 'relatorio.html?tipo=noturno', badge: 'all', nivel: 'ADMIN' },
+          { id: 'relatorio_diurno', titulo: 'Relatório Diurno', desc: 'Preencher relatório do plantão diurno', icon: 'fa-sun', url: 'relatorio.html?tipo=diurno', badge: 'all', nivel: 'ADMIN' },
+          { id: 'usuarios', titulo: 'Usuários do Sistema', desc: 'Gerenciar acessos e permissões', icon: 'fa-users-cog', url: '#', badge: 'admin', nivel: 'ADMIN', action: 'showUsers' },
+          { id: 'pacientes', titulo: 'Gerenciar Pacientes', desc: 'Cadastrar e gerenciar residentes', icon: 'fa-procedures', url: '#', badge: 'admin', nivel: 'ADMIN', action: 'showPacientes' }
+        ]
+      },
+      ENFERMEIRO: {
+        nome: 'Enfermeiro',
+        cor: 'level-ENFERMEIRO',
+        menus: [
+          { id: 'relatorio_noturno', titulo: 'Relatório Noturno', desc: 'Preencher relatório do plantão noturno', icon: 'fa-moon', url: 'relatorio.html?tipo=noturno', badge: 'all', nivel: 'ENFERMEIRO' },
+          { id: 'relatorio_diurno', titulo: 'Relatório Diurno', desc: 'Preencher relatório do plantão diurno', icon: 'fa-sun', url: 'relatorio.html?tipo=diurno', badge: 'all', nivel: 'ENFERMEIRO' }
+        ]
+      },
+      TECNICO: {
+        nome: 'Técnico',
+        cor: 'level-TECNICO',
+        menus: [
+          { id: 'relatorio_noturno', titulo: 'Relatório Noturno', desc: 'Preencher relatório do plantão noturno', icon: 'fa-moon', url: 'relatorio.html?tipo=noturno', badge: 'tec', nivel: 'TECNICO' },
+          { id: 'relatorio_diurno', titulo: 'Relatório Diurno', desc: 'Preencher relatório do plantão diurno', icon: 'fa-sun', url: 'relatorio.html?tipo=diurno', badge: 'tec', nivel: 'TECNICO' }
+        ]
+      },
+      ESTAGIARIO: {
+        nome: 'Estagiário',
+        cor: 'level-ESTAGIARIO',
+        menus: [
+          { id: 'relatorio_noturno', titulo: 'Relatório Noturno', desc: 'Visualizar relatório do plantão noturno', icon: 'fa-moon', url: 'relatorio.html?tipo=noturno&modo=visualizar', badge: 'all', nivel: 'ESTAGIARIO' },
+          { id: 'relatorio_diurno', titulo: 'Relatório Diurno', desc: 'Visualizar relatório do plantão diurno', icon: 'fa-sun', url: 'relatorio.html?tipo=diurno&modo=visualizar', badge: 'all', nivel: 'ESTAGIARIO' }
+        ]
+      }
+    };
+
+    // Inicializar página
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 Inicializando home para:', sessao.nome);
+      
+      const config = permissoes[sessao.nivel];
+      
+      if (!config) {
+        console.error('❌ Nível de acesso inválido:', sessao.nivel);
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Atualizar header
+      document.getElementById('displayUserName').textContent = sessao.nome;
+      const levelBadge = document.getElementById('displayUserLevel');
+      levelBadge.textContent = config.nome;
+      levelBadge.className = `user-level ${config.cor}`;
+      
+      // Mensagem de boas-vindas personalizada
+      document.getElementById('welcomeMessage').textContent = `Bem-vindo(a), ${sessao.nome}!`;
+      const subtextos = {
+        ADMIN: 'Você tem acesso total ao sistema de relatórios e gerenciamento.',
+        ENFERMEIRO: 'Você pode criar e gerenciar relatórios de enfermagem.',
+        TECNICO: 'Você pode preencher relatórios de plantão.',
+        ESTAGIARIO: 'Você tem acesso de visualização aos relatórios.'
+      };
+      document.getElementById('welcomeSubtext').textContent = subtextos[sessao.nivel];
+      
+      // Mostrar estatísticas apenas para ADMIN
+      const statsSection = document.getElementById('statsSection');
+      if (sessao.nivel === 'ADMIN') {
+        statsSection.classList.remove('hidden');
+        carregarEstatisticas();
+      }
+      
+      // Renderizar menu
+      renderizarMenu(config.menus);
+    });
+
+    function renderizarMenu(menus) {
+      const container = document.getElementById('menuGrid');
+      container.innerHTML = '';
+      
+      // Filtrar menus baseado no nível do usuário
+      const menusFiltrados = menus.filter(menu => {
+        // ADMIN vê tudo
+        if (sessao.nivel === 'ADMIN') return true;
+        
+        // Outros níveis não veem itens exclusivos de ADMIN
+        return menu.nivel !== 'ADMIN';
+      });
+      
+      menusFiltrados.forEach(menu => {
+        const card = document.createElement('a');
+        card.className = 'menu-card';
+        card.href = menu.url;
+        
+        // Se tiver ação especial
+        if (menu.action === 'showUsers') {
+          card.onclick = function(e) {
+            e.preventDefault();
+            abrirModalAuthAdmin();
+          };
+        }
+        
+        // Ação para pacientes
+        if (menu.action === 'showPacientes') {
+          card.onclick = function(e) {
+            e.preventDefault();
+            abrirModalListaPacientes();
+          };
+        }
+        
+        const badgeClass = {
+          'all': 'access-all',
+          'admin': 'access-admin',
+          'enf': 'access-enf',
+          'tec': 'access-tec'
+        }[menu.badge] || 'access-all';
+        
+        const badgeText = {
+          'all': 'Geral',
+          'admin': 'Admin',
+          'enf': 'Enfermagem',
+          'tec': 'Técnico'
+        }[menu.badge] || 'Geral';
+        
+        card.innerHTML = `
+          <span class="access-badge ${badgeClass}">${badgeText}</span>
+          <div class="menu-icon">
+            <i class="fas ${menu.icon}"></i>
+          </div>
+          <h3>${menu.titulo}</h3>
+          <p>${menu.desc}</p>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    async function carregarEstatisticas() {
+      try {
+        // Buscar relatórios do dia via API
+        const response = await fetch(`${API_URL}/relatorios?data_inicio=${new Date().toISOString().split('T')[0]}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const relatorios = await response.json();
+          document.getElementById('statRelatorios').textContent = relatorios.length;
+        }
+
+        // Buscar pacientes
+        const pacientesResponse = await fetch(`${API_URL}/pacientes`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (pacientesResponse.ok) {
+          const pacientes = await pacientesResponse.json();
+          document.getElementById('statPacientes').textContent = pacientes.length;
+        }
+
+        // Buscar usuários não-admin
+        const usuariosResponse = await fetch(`${API_URL}/usuarios`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (usuariosResponse.ok) {
+          const usuarios = await usuariosResponse.json();
+          const plantonistas = usuarios.filter(u => u.nivel !== 'ADMIN').length;
+          document.getElementById('statPlantonistas').textContent = plantonistas;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar estatísticas:', error);
+      }
+    }
+
+    function formatarTelefone(telefone) {
+      if (!telefone) return '-';
+      return telefone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+
+    function abrirModalCadastroUsuario() {
+      document.getElementById('modalCadastroUsuario').classList.add('active');
+    }
+
+    async function abrirModalListaUsuarios() {
+      await carregarListaUsuariosModal();
+      document.getElementById('modalListaUsuarios').classList.add('active');
+    }
+
+    function fecharModal(id) {
+      document.getElementById(id).classList.remove('active');
+      // Limpar mensagem de erro ao fechar modal de auth
+      if (id === 'modalAuthAdmin') {
+        document.getElementById('authError').style.display = 'none';
+        document.getElementById('adminAuthSenha').value = '';
+      }
+      if (id === 'modalAuthAdminPacientes') {
+        document.getElementById('authErrorPacientes').style.display = 'none';
+        document.getElementById('adminAuthSenhaPacientes').value = '';
+      }
+    }
+
+    // Abrir modal de autenticação de administrador
+    function abrirModalAuthAdmin() {
+      document.getElementById('modalAuthAdmin').classList.add('active');
+      document.getElementById('adminAuthSenha').focus();
+    }
+
+    // Validar senha do administrador
+    async function validarSenhaAdmin() {
+      const senha = document.getElementById('adminAuthSenha').value;
+      
+      if (!senha) {
+        document.getElementById('authError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Digite a senha do administrador.';
+        document.getElementById('authError').style.display = 'block';
+        return;
+      }
+
+      try {
+        // Chamar a API de verificação de senha do admin
+        const response = await fetch(`${API_URL}/auth/verificar-senha-admin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ senha: senha })
+        });
+
+        if (response.ok) {
+          // Senha correta - fechar modal de auth e abrir lista de usuários
+          fecharModal('modalAuthAdmin');
+          await abrirModalListaUsuarios();
+        } else {
+          // Senha incorreta ou outro erro
+          const data = await response.json();
+          document.getElementById('authError').innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.erro || 'Senha incorreta. Tente novamente.'}`;
+          document.getElementById('authError').style.display = 'block';
+          document.getElementById('adminAuthSenha').value = '';
+          document.getElementById('adminAuthSenha').focus();
+        }
+      } catch (error) {
+        console.error('Erro ao validar senha:', error);
+        document.getElementById('authError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao conectar com o servidor.';
+        document.getElementById('authError').style.display = 'block';
+      }
+    }
+
+    // Permitir Enter no campo de senha
+    document.addEventListener('DOMContentLoaded', function() {
+      const senhaInput = document.getElementById('adminAuthSenha');
+      if (senhaInput) {
+        senhaInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            validarSenhaAdmin();
+          }
+        });
+      }
+    });
+
+    async function carregarListaUsuariosModal() {
+      try {
+        const response = await fetch(`${API_URL}/usuarios`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Erro ao carregar usuários');
+
+        const usuarios = await response.json();
+        const container = document.getElementById('modalUserList');
+        
+        container.innerHTML = usuarios.map(u => `
+          <div class="user-item" style="flex-wrap: wrap; gap: 10px;">
+            <div class="user-item-info" style="flex: 1; min-width: 250px;">
+              <h4>${u.nome}</h4>
+              <p>
+                <i class="fas fa-user"></i> ${u.usuario} | 
+                <i class="fas fa-tag"></i> ${u.nivel} | 
+                <i class="fas fa-${u.sexo === 'M' ? 'mars' : 'venus'}"></i> ${u.sexo === 'M' ? 'Masculino' : 'Feminino'} |
+                <i class="fas fa-calendar"></i> ${u.idade} anos |
+                <i class="fas fa-phone"></i> ${formatarTelefone(u.telefone)} |
+                <span style="color: ${u.ativo ? 'var(--verde-bebe-text)' : 'var(--rosa-bebe-text)'}">
+                  <i class="fas fa-${u.ativo ? 'check-circle' : 'ban'}"></i> 
+                  ${u.ativo ? 'Ativo' : 'Inativo'}
+                </span>
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              ${u.id !== 1 ? `
+                <button class="btn-action btn-edit" onclick="abrirModalEditarUsuario(${u.id})">
+                  <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn-action ${u.ativo ? 'btn-delete' : 'btn-view'}" onclick="toggleUsuario(${u.id})">
+                  <i class="fas ${u.ativo ? 'fa-ban' : 'fa-check'}"></i> 
+                  ${u.ativo ? 'Desativar' : 'Ativar'}
+                </button>
+              ` : '<span style="color: var(--texto-claro); font-size: 0.85rem;"><i class="fas fa-crown"></i> Admin Principal</span>'}
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar usuários:', error);
+        document.getElementById('modalUserList').innerHTML = `
+          <div style="text-align: center; padding: 30px; color: var(--texto-claro);">
+            Erro ao carregar usuários. Tente novamente.
+          </div>
+        `;
+      }
+    }
+
+    // Abrir modal de edição de usuário
+    async function abrirModalEditarUsuario(userId) {
+      try {
+        const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Erro ao carregar usuário');
+
+        const usuario = await response.json();
+        
+        // Preencher formulário com dados do usuário
+        document.getElementById('editUserId').value = usuario.id;
+        document.getElementById('editUserNome').value = usuario.nome;
+        document.getElementById('editUserIdade').value = usuario.idade;
+        document.getElementById('editUserSexo').value = usuario.sexo;
+        document.getElementById('editUserTelefone').value = usuario.telefone || '';
+        document.getElementById('editUserUsuario').value = usuario.usuario;
+        document.getElementById('editUserNivel').value = usuario.nivel;
+        document.getElementById('editUserAtivo').value = usuario.ativo ? 'true' : 'false';
+        document.getElementById('editUserSenha').value = ''; // Limpar campo de senha
+        
+        fecharModal('modalListaUsuarios');
+        document.getElementById('modalEditarUsuario').classList.add('active');
+      } catch (error) {
+        console.error('Erro ao carregar usuário para edição:', error);
+        alert('Erro ao carregar dados do usuário. Tente novamente.');
+      }
+    }
+
+    // Salvar edição de usuário
+    async function salvarEdicaoUsuario(event) {
+      event.preventDefault();
+      
+      const userId = document.getElementById('editUserId').value;
+      const usuario = {
+        nome: document.getElementById('editUserNome').value,
+        idade: parseInt(document.getElementById('editUserIdade').value),
+        sexo: document.getElementById('editUserSexo').value,
+        telefone: document.getElementById('editUserTelefone').value,
+        usuario: document.getElementById('editUserUsuario').value,
+        nivel: document.getElementById('editUserNivel').value,
+        ativo: document.getElementById('editUserAtivo').value === 'true'
+      };
+
+      // Adicionar senha apenas se foi preenchida
+      const novaSenha = document.getElementById('editUserSenha').value;
+      if (novaSenha) {
+        usuario.senha = novaSenha;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(usuario)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Usuário atualizado com sucesso!');
+          fecharModal('modalEditarUsuario');
+          await abrirModalListaUsuarios();
+          await carregarEstatisticas();
+        } else {
+          alert(data.erro || 'Erro ao atualizar usuário');
+        }
+      } catch (error) {
+        console.error('Erro ao atualizar usuário:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    }
+
+    async function salvarUsuario(event) {
+      event.preventDefault();
+      
+      const usuario = {
+        nome: document.getElementById('newUserNome').value,
+        idade: parseInt(document.getElementById('newUserIdade').value),
+        sexo: document.getElementById('newUserSexo').value,
+        telefone: document.getElementById('newUserTelefone').value,
+        usuario: document.getElementById('newUserUsuario').value,
+        senha: document.getElementById('newUserSenha').value,
+        nivel: document.getElementById('newUserNivel').value
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/usuarios`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(usuario)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Usuário criado com sucesso!');
+          fecharModal('modalCadastroUsuario');
+          event.target.reset();
+          await carregarListaUsuariosModal();
+          await carregarEstatisticas();
+        } else {
+          alert(data.erro || 'Erro ao criar usuário');
+        }
+      } catch (error) {
+        console.error('Erro ao salvar usuário:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    }
+
+    async function toggleUsuario(id) {
+      try {
+        const response = await fetch(`${API_URL}/usuarios/${id}/toggle-status`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          await carregarListaUsuariosModal();
+          await carregarEstatisticas();
+        } else {
+          const data = await response.json();
+          alert(data.erro || 'Erro ao alterar status');
+        }
+      } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    }
+
+    function fazerLogout() {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('usuario');
+      window.location.href = 'login.html';
+    }
+
+    // Fechar modais ao clicar fora
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+        }
+      });
+    });
+
+    // ===== NOVAS FUNÇÕES PARA PACIENTES =====
+
+    // Abrir modal de lista de pacientes (com autenticação)
+    function abrirModalListaPacientes() {
+      document.getElementById('modalAuthAdminPacientes').classList.add('active');
+      document.getElementById('adminAuthSenhaPacientes').focus();
+    }
+
+    // Validar senha do administrador para pacientes
+    async function validarSenhaAdminPacientes() {
+      const senha = document.getElementById('adminAuthSenhaPacientes').value;
+      
+      if (!senha) {
+        document.getElementById('authErrorPacientes').innerHTML = '<i class="fas fa-exclamation-circle"></i> Digite a senha do administrador.';
+        document.getElementById('authErrorPacientes').style.display = 'block';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth/verificar-senha-admin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ senha: senha })
+        });
+
+        if (response.ok) {
+          fecharModal('modalAuthAdminPacientes');
+          document.getElementById('modalListaPacientes').classList.add('active');
+          await carregarPacientes();
+          document.getElementById('adminAuthSenhaPacientes').value = '';
+          document.getElementById('authErrorPacientes').style.display = 'none';
+        } else {
+          const data = await response.json();
+          document.getElementById('authErrorPacientes').innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.erro || 'Senha incorreta.'}`;
+          document.getElementById('authErrorPacientes').style.display = 'block';
+          document.getElementById('adminAuthSenhaPacientes').value = '';
+          document.getElementById('adminAuthSenhaPacientes').focus();
+        }
+      } catch (error) {
+        console.error('Erro ao validar senha:', error);
+        document.getElementById('authErrorPacientes').innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao conectar com o servidor.';
+        document.getElementById('authErrorPacientes').style.display = 'block';
+      }
+    }
+
+    // Abrir modal de cadastro de paciente
+    function abrirModalCadastroPaciente(id = null) {
+      if (id) {
+        // Modo edição
+        document.getElementById('modalPacienteTitulo').innerHTML = '<i class="fas fa-user-edit"></i> Editar Paciente';
+        carregarPacienteParaEdicao(id);
+      } else {
+        // Modo cadastro
+        document.getElementById('modalPacienteTitulo').innerHTML = '<i class="fas fa-user-plus"></i> Cadastrar Novo Paciente';
+        document.getElementById('formPaciente').reset();
+        document.getElementById('pacienteId').value = '';
+        document.getElementById('pacienteAtivo').checked = true;
+        
+        // Data atual para data de internação
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('pacienteDataInternacao').value = hoje;
+      }
+      
+      fecharModal('modalListaPacientes');
+      document.getElementById('modalCadastroPaciente').classList.add('active');
+    }
+
+    // Carregar pacientes na tabela
+    async function carregarPacientes() {
+      try {
+        const busca = document.getElementById('buscaPaciente')?.value || '';
+        const filtro = document.getElementById('filtroAtivoPaciente')?.value || 'ativos';
+        
+        let url = `${API_URL}/pacientes`;
+        const params = new URLSearchParams();
+        
+        if (busca) params.append('busca', busca);
+        if (filtro === 'ativos') params.append('ativos', 'true');
+        if (filtro === 'inativos') params.append('inativos', 'true');
+        
+        if (params.toString()) url += '?' + params.toString();
+        
+        const response = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) throw new Error('Erro ao carregar pacientes');
+        
+        const pacientes = await response.json();
+        const tbody = document.getElementById('pacientesTableBody');
+        
+        if (pacientes.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 40px; color: var(--texto-claro);">
+                <i class="fas fa-user-slash fa-3x" style="margin-bottom: 15px; opacity: 0.5;"></i><br>
+                Nenhum paciente encontrado
+              </td>
+            </tr>
+          `;
+          return;
+        }
+        
+        tbody.innerHTML = pacientes.map(p => `
+          <tr>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              <strong>${p.nome_completo}</strong><br>
+              <small style="color: var(--texto-claro);">${p.diagnostico_principal ? p.diagnostico_principal.substring(0, 30) + '...' : 'Sem diagnóstico'}</small>
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              ${p.idade} anos<br>
+              <small style="color: var(--texto-claro);">${p.sexo === 'M' ? 'Masculino' : 'Feminino'}</small>
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              ${p.quarto ? `Quarto ${p.quarto}` : '-'}<br>
+              ${p.leito ? `Leito ${p.leito}` : ''}
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              ${p.nome_responsavel || '-'}<br>
+              <small style="color: var(--texto-claro);">${p.telefone_responsavel || ''}</small>
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              <span style="background: ${p.ativo ? 'var(--verde-bebe)' : 'var(--rosa-bebe)'}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">
+                ${p.ativo ? 'Ativo' : 'Inativo'}
+              </span>
+            </td>
+            <td style="padding: 12px; border-bottom: 1px solid var(--verde-bebe-soft);">
+              <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                <button class="btn-action btn-view" onclick="visualizarPaciente(${p.id})" title="Visualizar">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-edit" onclick="abrirModalCadastroPaciente(${p.id})" title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action ${p.ativo ? 'btn-delete' : 'btn-view'}" onclick="togglePacienteStatus(${p.id})" title="${p.ativo ? 'Desativar' : 'Ativar'}">
+                  <i class="fas ${p.ativo ? 'fa-ban' : 'fa-check'}"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+        
+      } catch (error) {
+        console.error('Erro ao carregar pacientes:', error);
+        document.getElementById('pacientesTableBody').innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 30px; color: var(--rosa-bebe-text);">
+              <i class="fas fa-exclamation-triangle"></i> Erro ao carregar pacientes
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Calcular idade automaticamente
+    function calcularIdade() {
+      const dataNasc = document.getElementById('pacienteDataNasc').value;
+      if (!dataNasc) return;
+      
+      const hoje = new Date();
+      const nasc = new Date(dataNasc);
+      let idade = hoje.getFullYear() - nasc.getFullYear();
+      const mes = hoje.getMonth() - nasc.getMonth();
+      
+      if (mes < 0 || (mes === 0 && hoje.getDate() < nasc.getDate())) {
+        idade--;
+      }
+      
+      document.getElementById('pacienteIdade').value = idade;
+    }
+
+    // Máscara para telefone
+    function mascaraTelefone(input) {
+      let v = input.value.replace(/\D/g, '');
+      v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+      v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+      input.value = v;
+    }
+
+    // Carregar paciente para edição
+    async function carregarPacienteParaEdicao(id) {
+      try {
+        const response = await fetch(`${API_URL}/pacientes/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) throw new Error('Erro ao carregar paciente');
+        
+        const p = await response.json();
+        
+        document.getElementById('pacienteId').value = p.id;
+        document.getElementById('pacienteNome').value = p.nome_completo || '';
+        document.getElementById('pacienteDataNasc').value = p.data_nascimento || '';
+        document.getElementById('pacienteIdade').value = p.idade || '';
+        document.getElementById('pacienteSexo').value = p.sexo || '';
+        document.getElementById('pacienteResponsavelNome').value = p.nome_responsavel || '';
+        document.getElementById('pacienteResponsavelTelefone').value = p.telefone_responsavel || '';
+        document.getElementById('pacienteQuarto').value = p.quarto || '';
+        document.getElementById('pacienteLeito').value = p.leito || '';
+        document.getElementById('pacienteDataInternacao').value = p.data_internacao || '';
+        document.getElementById('pacienteDiagnostico').value = p.diagnostico_principal || '';
+        document.getElementById('pacienteAlergias').value = p.alergias || '';
+        document.getElementById('pacienteMedicamentos').value = p.medicamentos_continuos || '';
+        document.getElementById('pacienteObservacoes').value = p.observacoes || '';
+        document.getElementById('pacienteAtivo').checked = p.ativo ? true : false;
+        
+      } catch (error) {
+        console.error('Erro ao carregar paciente:', error);
+        alert('Erro ao carregar dados do paciente');
+      }
+    }
+
+    // Visualizar paciente
+    async function visualizarPaciente(id) {
+      try {
+        const response = await fetch(`${API_URL}/pacientes/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) throw new Error('Erro ao carregar paciente');
+        
+        const p = await response.json();
+        
+        const detalhes = `
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 20px; background: var(--verde-bebe-light); padding: 20px; border-radius: 16px;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--verde-bebe), var(--rosa-bebe)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <h2 style="color: var(--verde-bebe-text); margin-bottom: 5px;">${p.nome_completo}</h2>
+                <p style="color: var(--texto-claro);">${p.idade} anos • ${p.sexo === 'M' ? 'Masculino' : 'Feminino'}</p>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div style="background: var(--branco); padding: 15px; border-radius: 12px; border: 2px solid var(--verde-bebe-soft);">
+                <h4 style="color: var(--verde-bebe-text); margin-bottom: 10px;"><i class="fas fa-calendar"></i> Datas</h4>
+                <p><strong>Nascimento:</strong> ${new Date(p.data_nascimento).toLocaleDateString('pt-BR')}</p>
+                <p><strong>Internação:</strong> ${p.data_internacao ? new Date(p.data_internacao).toLocaleDateString('pt-BR') : 'Não informado'}</p>
+              </div>
+              
+              <div style="background: var(--branco); padding: 15px; border-radius: 12px; border: 2px solid var(--rosa-bebe-soft);">
+                <h4 style="color: var(--rosa-bebe-text); margin-bottom: 10px;"><i class="fas fa-map-marker-alt"></i> Localização</h4>
+                <p><strong>Quarto:</strong> ${p.quarto || 'Não informado'}</p>
+                <p><strong>Leito:</strong> ${p.leito || 'Não informado'}</p>
+              </div>
+            </div>
+            
+            <div style="background: var(--branco); padding: 15px; border-radius: 12px; border: 2px solid var(--verde-bebe-soft);">
+              <h4 style="color: var(--verde-bebe-text); margin-bottom: 10px;"><i class="fas fa-phone"></i> Contato</h4>
+              <p><strong>Responsável:</strong> ${p.nome_responsavel || 'Não informado'}</p>
+              <p><strong>Telefone:</strong> ${p.telefone_responsavel || 'Não informado'}</p>
+            </div>
+            
+            <div style="background: var(--branco); padding: 15px; border-radius: 12px; border: 2px solid var(--rosa-bebe-soft);">
+              <h4 style="color: var(--rosa-bebe-text); margin-bottom: 10px;"><i class="fas fa-notes-medical"></i> Informações Médicas</h4>
+              <p><strong>Diagnóstico:</strong> ${p.diagnostico_principal || 'Não informado'}</p>
+              <p><strong>Alergias:</strong> ${p.alergias || 'Não informado'}</p>
+              <p><strong>Medicamentos:</strong> ${p.medicamentos_continuos || 'Não informado'}</p>
+            </div>
+            
+            ${p.observacoes ? `
+            <div style="background: var(--verde-bebe-light); padding: 15px; border-radius: 12px;">
+              <h4 style="color: var(--verde-bebe-text); margin-bottom: 10px;"><i class="fas fa-comment"></i> Observações</h4>
+              <p>${p.observacoes}</p>
+            </div>
+            ` : ''}
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--fundo); padding: 10px; border-radius: 8px;">
+              <span style="color: var(--texto-claro); font-size: 0.9rem;">
+                <i class="fas fa-clock"></i> Cadastrado em: ${new Date(p.created_at).toLocaleString('pt-BR')}
+              </span>
+              <span style="background: ${p.ativo ? 'var(--verde-bebe)' : 'var(--rosa-bebe)'}; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem;">
+                ${p.ativo ? 'Ativo' : 'Inativo'}
+              </span>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('detalhesPaciente').innerHTML = detalhes;
+        document.getElementById('modalVisualizarPaciente').classList.add('active');
+        
+      } catch (error) {
+        console.error('Erro ao visualizar paciente:', error);
+        alert('Erro ao carregar dados do paciente');
+      }
+    }
+
+    // Salvar paciente
+    async function salvarPaciente(event) {
+      event.preventDefault();
+      
+      const id = document.getElementById('pacienteId').value;
+      const metodo = id ? 'PUT' : 'POST';
+      const url = id ? `${API_URL}/pacientes/${id}` : `${API_URL}/pacientes`;
+      
+      const paciente = {
+        nome_completo: document.getElementById('pacienteNome').value,
+        data_nascimento: document.getElementById('pacienteDataNasc').value,
+        idade: parseInt(document.getElementById('pacienteIdade').value) || null,
+        sexo: document.getElementById('pacienteSexo').value,
+        telefone_responsavel: document.getElementById('pacienteResponsavelTelefone').value || null,
+        nome_responsavel: document.getElementById('pacienteResponsavelNome').value || null,
+        quarto: document.getElementById('pacienteQuarto').value || null,
+        leito: document.getElementById('pacienteLeito').value || null,
+        data_internacao: document.getElementById('pacienteDataInternacao').value || null,
+        diagnostico_principal: document.getElementById('pacienteDiagnostico').value || null,
+        alergias: document.getElementById('pacienteAlergias').value || null,
+        medicamentos_continuos: document.getElementById('pacienteMedicamentos').value || null,
+        observacoes: document.getElementById('pacienteObservacoes').value || null,
+        ativo: document.getElementById('pacienteAtivo').checked
+      };
+      
+      try {
+        const response = await fetch(url, {
+          method: metodo,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(paciente)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert(id ? 'Paciente atualizado com sucesso!' : 'Paciente cadastrado com sucesso!');
+          fecharModal('modalCadastroPaciente');
+          await carregarPacientes();
+        } else {
+          alert(result.erro || 'Erro ao salvar paciente');
+        }
+      } catch (error) {
+        console.error('Erro ao salvar paciente:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    }
+
+    // Ativar/Desativar paciente
+    async function togglePacienteStatus(id) {
+      if (!confirm('Deseja alterar o status deste paciente?')) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/pacientes/${id}/toggle-status`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          await carregarPacientes();
+        } else {
+          const data = await response.json();
+          alert(data.erro || 'Erro ao alterar status');
+        }
+      } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    }
+
+    // Event listeners para busca e filtro
+    document.addEventListener('DOMContentLoaded', function() {
+      // Campos de busca de pacientes
+      const buscaInput = document.getElementById('buscaPaciente');
+      const filtroSelect = document.getElementById('filtroAtivoPaciente');
+      
+      if (buscaInput) {
+        buscaInput.addEventListener('input', debounce(() => {
+          if (document.getElementById('modalListaPacientes').classList.contains('active')) {
+            carregarPacientes();
+          }
+        }, 500));
+      }
+      
+      if (filtroSelect) {
+        filtroSelect.addEventListener('change', () => {
+          if (document.getElementById('modalListaPacientes').classList.contains('active')) {
+            carregarPacientes();
+          }
+        });
+      }
+
+      // Enter no campo de senha de pacientes
+      const senhaPacientesInput = document.getElementById('adminAuthSenhaPacientes');
+      if (senhaPacientesInput) {
+        senhaPacientesInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            validarSenhaAdminPacientes();
+          }
+        });
+      }
+    });
+
+    // Debounce para busca
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+  </script>
+</body>
+</html>
