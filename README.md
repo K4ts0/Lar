@@ -440,8 +440,7 @@ copies or substantial portions of the Software.
 
 **LAR RESIDENCIAL ACONCHEGO** - *Sistema de Enfermagem*
 
-📧 Email: contato@laraconchego.com.br
-🌐 Website: www.laraconchego.com.br
+GitHub : https://github.com/K4ts0 
 
 ---
 
